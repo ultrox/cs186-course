@@ -36,12 +36,13 @@ protected [sql] final class GeneralDiskHashedRelation(partitions: Array[DiskPart
     extends DiskHashedRelation with Serializable {
 
   override def getIterator() = {
-    // IMPLEMENT ME
-    null
+    Arrays.asList(partitions).Iterator();
   }
 
   override def closeAllPartitions() = {
-    // IMPLEMENT ME
+    for(part <- partitions){
+      part.closePartition()
+    }
   }
 }
 
@@ -63,7 +64,13 @@ private[sql] class DiskPartition (
    * @param row the [[Row]] we are adding
    */
   def insert(row: Row) = {
-    // IMPLEMENT ME
+    if (blockSize < measurePartionSize()){ // + CS186Utils.getBytesFromList(row).size) { // don't need the CS186.Utils.getbytes etc part
+      spillPartitionToDisk() 
+      data.clear()//this is correct, but after spilling to disk, you should clear data and add the current row to it
+    }
+    else {
+      data.add(row) 
+    }
   }
 
   /**
@@ -106,13 +113,16 @@ private[sql] class DiskPartition (
       var byteArray: Array[Byte] = null
 
       override def next() = {
-        // IMPLEMENT ME
-        null
+        currentIterator.next()
       }
 
       override def hasNext() = {
-        // IMPLEMENT ME
-        false
+        if (currentIterator.hasNext()) {
+          fetchNextChunk()
+        }
+        else {
+          true
+        }
       }
 
       /**
@@ -122,11 +132,23 @@ private[sql] class DiskPartition (
        * @return true unless the iterator is empty.
        */
       private[this] def fetchNextChunk(): Boolean = {
-        // IMPLEMENT ME
-        false
+        if (chunkSizeIterator.hasNext()) {
+          chunk_size = chunkSizeIterator.next()
+          byteArray = CS186Utils.getNextChunkBytes(inStream, chunk_size, byteArray) //after doing this, you should get a list from this byte array using CS186Utils.getListFromBytes(byteArray), then get an iterator from the list and reassign it to currentIterator
+          currentIterator = CS186Utils.getListFromBytes(byteArray).iterator()
+
+          if (chunk_size<=0)
+          {
+            false
+          }
+          else{
+            true
+          }//if chunk_size <= 0, you should return false
+        } 
+        else {
+          false
+        }
       }
-    }
-  }
 
   /**
    * Closes this partition, implying that no more data will be written to this partition. If getData()
@@ -136,7 +158,11 @@ private[sql] class DiskPartition (
    * also be closed.
    */
   def closeInput() = {
-    // IMPLEMENT ME
+    if (! data.isEmpty()) // i didnt have written == false  (written == False && ! data.isEmpty()) 
+      spillPartitionToDisk()
+    //closePartition() //you don't have to do this -- i think closePartition() serves a different purpose. you can also close the outStream. ALso, clear data (data.clear())
+    outStream.close()
+    data.clear()
     inputClosed = true
   }
 
@@ -173,7 +199,22 @@ private[sql] object DiskHashedRelation {
                 keyGenerator: Projection,
                 size: Int = 64,
                 blockSize: Int = 64000) = {
-    // IMPLEMENT ME
-    null
+    var disk_partition_array = new Array[DiskPartition]
+    // Fill array with empty partitions
+    for(int i = 1; i <= size; i++){
+      var str_name = "" + i
+      var tmp_partition = new DiskPartition(str_name, blockSize)
+      disk_partition_array.add(tmp_partition)
+    }
+
+    // Hashing the rows to partitions
+    for(var row <- input.map(keyGenerator)){
+      var hashed_partition = row.hashCode() % size
+      disk_partition_array.index(hashed_partition).insert(row)
+    }
+    for(var partition <- disk_partition_array){
+      partition.closeInput()
+    }
+    GeneralDiskHashedRelation(disk_partition_array) //before this, you should call closeInput() on all the partitions you created
   }
 }
