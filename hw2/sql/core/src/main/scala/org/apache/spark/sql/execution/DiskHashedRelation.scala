@@ -75,7 +75,7 @@ private[sql] class DiskPartition (
         data.add(row) 
       }
     } else{
-      throw new SparkException
+      throw SparkException
     }
   }
 
