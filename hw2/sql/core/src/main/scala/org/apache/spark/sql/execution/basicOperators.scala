@@ -140,7 +140,7 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
         else {
           false
         }*/
-        null
+        false
       }
     }
   }
