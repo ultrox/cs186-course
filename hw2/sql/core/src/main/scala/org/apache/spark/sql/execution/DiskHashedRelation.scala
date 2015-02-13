@@ -75,7 +75,7 @@ private[sql] class DiskPartition (
         data.add(row) 
       }
     } else{
-      throw SparkException
+      throw new SparkException("Cannot insert with a closed input")
     }
   }
 
