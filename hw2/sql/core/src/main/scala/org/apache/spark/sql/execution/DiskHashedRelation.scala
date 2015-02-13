@@ -113,14 +113,14 @@ private[sql] class DiskPartition (
       var byteArray: Array[Byte] = null
 
       override def next() = {
-        null
+        currentIterator.next()
       }
 
       override def hasNext() = {
         if (currentIterator.hasNext) {
           fetchNextChunk()
         }else {
-          true
+          false
         }
       }
 
