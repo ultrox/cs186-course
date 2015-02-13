@@ -64,7 +64,7 @@ private[sql] class DiskPartition (
    * @param row the [[Row]] we are adding
    */
   def insert(row: Row) = {
-    if (!inputClosed){
+    //if (!inputClosed){
       if (blockSize < measurePartitionSize()){ // + CS186Utils.getBytesFromList(row).size) { // don't need the CS186.Utils.getbytes etc part
         spillPartitionToDisk() 
         data.clear()
@@ -74,7 +74,7 @@ private[sql] class DiskPartition (
       else {
         data.add(row) 
       }
-    }
+    //}
   }
 
   /**
@@ -166,6 +166,7 @@ private[sql] class DiskPartition (
    * also be closed.
    */
   def closeInput() = {
+    println(data)
     if (! data.isEmpty()) // i didnt have written == false  (written == False && ! data.isEmpty()) 
       spillPartitionToDisk()
     //closePartition() //you don't have to do this -- i think closePartition() serves a different purpose. you can also close the outStream. ALso, clear data (data.clear())
