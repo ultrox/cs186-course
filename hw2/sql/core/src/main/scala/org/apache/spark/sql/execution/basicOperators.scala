@@ -116,7 +116,7 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
         while (flag && !cachedRowIter.hasNext) {
           flag = fetchNextPartition()
         }
-        has
+        flag
       }
 
       def next() = {
