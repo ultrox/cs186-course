@@ -136,6 +136,7 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
         val partitionRows = diskIter.next().getData()
         cachedRowIter = CachingIteratorGenerator(child.output, udf, preUdfExpressions, postUdfExpressions, child.output)(partitionRows)
         true
+      }
     }
   }
 
