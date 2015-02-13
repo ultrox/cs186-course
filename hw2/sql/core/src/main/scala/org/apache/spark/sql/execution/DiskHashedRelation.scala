@@ -149,6 +149,8 @@ private[sql] class DiskPartition (
           false
         }
       }
+    }
+  }
 
   /**
    * Closes this partition, implying that no more data will be written to this partition. If getData()
