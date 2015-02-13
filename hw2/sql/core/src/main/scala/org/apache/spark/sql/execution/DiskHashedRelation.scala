@@ -40,7 +40,7 @@ protected [sql] final class GeneralDiskHashedRelation(partitions: Array[DiskPart
   }
 
   override def closeAllPartitions() = {
-    for(  part <- partitions){
+    for(part <- partitions){
       part.closePartition()
     }
   }
