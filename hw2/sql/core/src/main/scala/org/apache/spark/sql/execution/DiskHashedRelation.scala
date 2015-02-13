@@ -64,14 +64,16 @@ private[sql] class DiskPartition (
    * @param row the [[Row]] we are adding
    */
   def insert(row: Row) = {
-    if (blockSize < measurePartitionSize()){ // + CS186Utils.getBytesFromList(row).size) { // don't need the CS186.Utils.getbytes etc part
-      spillPartitionToDisk() 
-      data.clear()
-      data.add(row)//this is correct, but after spilling to disk, you should clear data and add the current row to it
-      println(data)
-    }
-    else {
-      data.add(row) 
+    if (!inputClosed){
+      if (blockSize < measurePartitionSize()){ // + CS186Utils.getBytesFromList(row).size) { // don't need the CS186.Utils.getbytes etc part
+        spillPartitionToDisk() 
+        data.clear()
+        data.add(row)//this is correct, but after spilling to disk, you should clear data and add the current row to it
+        println(data)
+      }
+      else {
+        data.add(row) 
+      }
     }
   }
 
