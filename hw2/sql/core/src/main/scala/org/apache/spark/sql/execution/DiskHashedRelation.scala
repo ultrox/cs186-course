@@ -203,14 +203,13 @@ private[sql] object DiskHashedRelation {
     for( i <- 0 until size){
       var str_name = "" + i
       var tmp_partition = new DiskPartition(str_name, blockSize)
-      var part: DiskPartition = disk_partition_array(i) 
-      part.insert(tmp_partition)
+      disk_partition_array(i) = tmp_partition
     }
 
     // Hashing the rows to partitions
     for( row <- input.map(keyGenerator)){
       var hashed_partition = row.hashCode() % size
-      disk_partition_array(hashed_partition)+=row
+      disk_partition_array(hashed_partition).insert(row)
     }
     for( partition <- disk_partition_array){
       partition.closeInput()
