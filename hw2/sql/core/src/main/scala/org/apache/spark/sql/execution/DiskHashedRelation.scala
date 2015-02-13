@@ -64,7 +64,7 @@ private[sql] class DiskPartition (
    * @param row the [[Row]] we are adding
    */
   def insert(row: Row) = {
-    //if (!inputClosed){
+    if (!inputClosed){
       if (blockSize < measurePartitionSize()){ // + CS186Utils.getBytesFromList(row).size) { // don't need the CS186.Utils.getbytes etc part
         spillPartitionToDisk() 
         data.clear()
@@ -74,7 +74,9 @@ private[sql] class DiskPartition (
       else {
         data.add(row) 
       }
-    //}
+    } else{
+      throw new SparkException
+    }
   }
 
   /**
