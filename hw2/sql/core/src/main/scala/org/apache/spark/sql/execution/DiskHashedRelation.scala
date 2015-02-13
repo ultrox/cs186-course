@@ -36,7 +36,7 @@ protected [sql] final class GeneralDiskHashedRelation(partitions: Array[DiskPart
     extends DiskHashedRelation with Serializable {
 
   override def getIterator() = {
-    Arrays.asList(partitions).Iterator()
+    partitions.iterator
   }
 
   override def closeAllPartitions() = {
@@ -64,7 +64,7 @@ private[sql] class DiskPartition (
    * @param row the [[Row]] we are adding
    */
   def insert(row: Row) = {
-    if (blockSize < measurePartionSize()){ // + CS186Utils.getBytesFromList(row).size) { // don't need the CS186.Utils.getbytes etc part
+    if (blockSize < measurePartitionSize()){ // + CS186Utils.getBytesFromList(row).size) { // don't need the CS186.Utils.getbytes etc part
       spillPartitionToDisk() 
       data.clear()//this is correct, but after spilling to disk, you should clear data and add the current row to it
     }
@@ -117,7 +117,7 @@ private[sql] class DiskPartition (
       }
 
       override def hasNext() = {
-        if (currentIterator.hasNext()) {
+        if (currentIterator.hasNext {
           fetchNextChunk()
         }
         else {
@@ -132,10 +132,10 @@ private[sql] class DiskPartition (
        * @return true unless the iterator is empty.
        */
       private[this] def fetchNextChunk(): Boolean = {
-        if (chunkSizeIterator.hasNext()) {
-          chunk_size = chunkSizeIterator.next()
+        if (chunkSizeIterator.hasNext {
+          var chunk_size = chunkSizeIterator.next()
           byteArray = CS186Utils.getNextChunkBytes(inStream, chunk_size, byteArray) //after doing this, you should get a list from this byte array using CS186Utils.getListFromBytes(byteArray), then get an iterator from the list and reassign it to currentIterator
-          currentIterator = CS186Utils.getListFromBytes(byteArray).iterator()
+          currentIterator = CS186Utils.getListFromBytes(byteArray).iterator
 
           if (chunk_size<=0)
           {
@@ -201,7 +201,7 @@ private[sql] object DiskHashedRelation {
                 keyGenerator: Projection,
                 size: Int = 64,
                 blockSize: Int = 64000) = {
-    var disk_partition_array = new Array[DiskPartition]
+    var disk_partition_array = new Array[DiskPartition]()
     // Fill array with empty partitions
     for( i <- 1 to size){
       var str_name = "" + i
@@ -217,6 +217,6 @@ private[sql] object DiskHashedRelation {
     for( partition <- disk_partition_array){
       partition.closeInput()
     }
-    GeneralDiskHashedRelation(disk_partition_array) //before this, you should call closeInput() on all the partitions you created
+    new GeneralDiskHashedRelation(disk_partition_array) //before this, you should call closeInput() on all the partitions you created
   }
 }

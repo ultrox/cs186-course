@@ -73,7 +73,7 @@ object CS186Utils {
    * @return
    */
   def getNextChunkBytes(inStream: InputStream, nextChunkSize: Int, previousArray: Array[Byte] = null): Array[Byte] = {
-    var byteArray = previousArray
+    var byteArray : Array[Byte] = previousArray
     if (byteArray == null || byteArray.size != nextChunkSize) {
       byteArray = new Array[Byte](nextChunkSize)
     }
@@ -105,7 +105,7 @@ object CS186Utils {
    * @return
    */
   def getUdfFromExpressions(expressions: Seq[Expression]): ScalaUdf = {
-    var result = null
+    var result : Expression = null
     for( exp <- expressions){
         if (exp.isInstanceOf[ScalaUdf]){
             result = exp
@@ -193,13 +193,13 @@ object CachingIteratorGenerator {
         val cache: JavaHashMap[Row, Row] = new JavaHashMap[Row, Row]()
 
         def hasNext() = {
-          input.hasNext()
+          input.hasNext
         }
 
         def next() = {
-          var curRow = input.next()
+          var curRow: Row = input.next()
           var key = cacheKeyProjection.apply(curRow)
-          if (cache.contains(key)){
+          if (cache.containsKey(key)){
             var udfVal = cache.get(key)
           }
           else {
@@ -207,7 +207,7 @@ object CachingIteratorGenerator {
             cache.put(key,udfVal)
           }
 
-          val udfRow = preUdfProjection.apply(nextRow) ++ udfVal ++ postUdfProjection.apply(nextRow)
+          val udfRow = preUdfProjection.apply(curRow) ++ udfVal ++ postUdfProjection.apply(curRow)
           Row.fromSeq(udfRow)
         }
       }
