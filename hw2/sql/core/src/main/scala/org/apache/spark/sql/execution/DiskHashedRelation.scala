@@ -36,7 +36,7 @@ protected [sql] final class GeneralDiskHashedRelation(partitions: Array[DiskPart
     extends DiskHashedRelation with Serializable {
 
   override def getIterator() = {
-    partitions.iterator.asScala
+    partitions.iterator //.asScala
   }
 
   override def closeAllPartitions() = {
@@ -108,7 +108,7 @@ private[sql] class DiskPartition (
     }
 
     new Iterator[Row] {
-      var currentIterator: Iterator[Row] = data
+      var currentIterator: Iterator[Row] = data.iterator.asScala
       val chunkSizeIterator: Iterator[Int] = chunkSizes.iterator().asScala
       var byteArray: Array[Byte] = null
 
@@ -134,7 +134,7 @@ private[sql] class DiskPartition (
         if (chunkSizeIterator.hasNext) {
           var chunk_size = chunkSizeIterator.next()
           byteArray = CS186Utils.getNextChunkBytes(inStream, chunk_size, byteArray) //after doing this, you should get a list from this byte array using CS186Utils.getListFromBytes(byteArray), then get an iterator from the list and reassign it to currentIterator
-          currentIterator = CS186Utils.getListFromBytes(byteArray).iterator()
+          currentIterator = CS186Utils.getListFromBytes(byteArray).iterator.asScala
 
           if (chunk_size<=0)
           {
@@ -198,7 +198,7 @@ private[sql] object DiskHashedRelation {
                 keyGenerator: Projection,
                 size: Int = 64,
                 blockSize: Int = 64000) = {
-    var disk_partition_array: Array = new Array[DiskPartition](size)
+    var disk_partition_array = new Array[DiskPartition](size)
     // Fill array with empty partitions
     for( i <- 1 to size){
       var str_name = "" + i

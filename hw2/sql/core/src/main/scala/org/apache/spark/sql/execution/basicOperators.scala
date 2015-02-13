@@ -101,8 +101,8 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
     val diskPartitions: DiskHashedRelation = DiskHashedRelation(input, keyGenerator)
     val diskIter = diskPartitions.getIterator()
     val generator: (Iterator[Row] => Iterator[Row]) = CS186Utils.generateCachingIterator(projectList, child.output)
-    var partition: DiskPartition = null;
-    var rowIter :Iterator[Row]= null;
+    val partition: DiskPartition = null;
+    val rowIter :Iterator[Row]= null;
 
     new Iterator[Row] {
       def hasNext() = {
@@ -117,7 +117,8 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
 
       def next() = {
         // IMPLEMENT ME
-        generator(rowIter)
+        var nextRow: Row = rowIter.next()
+        generator(nextRow)
       }
 
       /**
