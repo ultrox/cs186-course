@@ -99,7 +99,7 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
     val keyGenerator = CS186Utils.getNewProjection(projectList, child.output)
 
     val diskPartitions: DiskHashedRelation = DiskHashedRelation(input, keyGenerator)
-    val diskIter = diskPartitions.getIterator()
+    var diskIter = diskPartitions.getIterator()
     val generator: (Iterator[Row] => Iterator[Row]) = CS186Utils.generateCachingIterator(projectList, child.output)
     var partition: DiskPartition = new DiskPartition("",64)
     var rowIter :Iterator[Row]= null
