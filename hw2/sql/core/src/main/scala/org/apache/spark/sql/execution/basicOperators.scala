@@ -105,22 +105,24 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
     val rowIter :Iterator[Row]= null;
 
     new Iterator[Row] {
-      def hasNext() = {
+      /*def hasNext() = {
         if(rowIter.hasNext){
           true
         }
         else {
           fetchNextPartition()
           false
-        }
+        }*/
+        false
       }
 
       def next() = {
         // IMPLEMENT ME
-        var nextRow: Row = rowIter.next()
-        //generator(nextRow)
-
-        nextRow.apply(generator)
+        /*var nextRow: Row = rowIter.next()
+        generator(nextRow)
+        */
+        null
+        //nextRow.apply(generator)
       }
 
       /**
@@ -130,14 +132,15 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
        * @return
        */
       private def fetchNextPartition(): Boolean  = {
-        if (diskIter.hasNext){
+        /*if (diskIter.hasNext){
           partition = diskIter.next()
           rowIter = partition.getData()
           true
         }
         else {
           false
-        }
+        }*/
+        null
       }
     }
   }
