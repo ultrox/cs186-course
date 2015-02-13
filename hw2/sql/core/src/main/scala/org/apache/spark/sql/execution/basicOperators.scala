@@ -106,7 +106,7 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
 
     new Iterator[Row] {
       def hasNext() = {
-        if(this.rowIter.hasNext){
+        if(rowIter.hasNext){
           true
         }
         else {
@@ -118,7 +118,7 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
 
       def next() = {
         // IMPLEMENT ME
-        this.rowIter.next()
+        rowIter.next()
         //nextRow.apply(generator)
       }
 
@@ -130,8 +130,9 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
        */
       private def fetchNextPartition(): Boolean  = {
         if (diskIter.hasNext){
-          this.partition = diskIter.next()
-          this.rowIter = generator(partition.getData())
+          print(partition)
+          partition = diskIter.next()
+          rowIter = generator(partition.getData())
           true
         }
         else {
