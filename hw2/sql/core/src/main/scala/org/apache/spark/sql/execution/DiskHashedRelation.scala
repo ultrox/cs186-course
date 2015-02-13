@@ -36,11 +36,11 @@ protected [sql] final class GeneralDiskHashedRelation(partitions: Array[DiskPart
     extends DiskHashedRelation with Serializable {
 
   override def getIterator() = {
-    Arrays.asList(partitions).Iterator();
+    Arrays.asList(partitions).Iterator()
   }
 
   override def closeAllPartitions() = {
-    for( var part <- partitions){
+    for(  part <- partitions){
       part.closePartition()
     }
   }
@@ -201,18 +201,18 @@ private[sql] object DiskHashedRelation {
                 blockSize: Int = 64000) = {
     var disk_partition_array = new Array[DiskPartition]
     // Fill array with empty partitions
-    for( int i = 1; i <= size; i++){
+    for( var i <- 1 to size){
       var str_name = "" + i
       var tmp_partition = new DiskPartition(str_name, blockSize)
       disk_partition_array.add(tmp_partition)
     }
 
     // Hashing the rows to partitions
-    for( var row <- input.map(keyGenerator)){
+    for( row <- input.map(keyGenerator)){
       var hashed_partition = row.hashCode() % size
       disk_partition_array.index(hashed_partition).insert(row)
     }
-    for( var partition <- disk_partition_array){
+    for( partition <- disk_partition_array){
       partition.closeInput()
     }
     GeneralDiskHashedRelation(disk_partition_array) //before this, you should call closeInput() on all the partitions you created

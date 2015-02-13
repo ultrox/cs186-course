@@ -106,7 +106,7 @@ object CS186Utils {
    */
   def getUdfFromExpressions(expressions: Seq[Expression]): ScalaUdf = {
     var result = null
-    for( var exp <- expressions){
+    for( exp <- expressions){
         if (exp.isInstanceOf[ScalaUdf]){
             result = exp
         }
