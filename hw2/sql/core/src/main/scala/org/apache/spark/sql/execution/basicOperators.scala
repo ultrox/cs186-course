@@ -117,7 +117,7 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
 
       def next() = {
         // IMPLEMENT ME
-        generator(rowIter.next())
+        generator(rowIter)
       }
 
       /**
@@ -128,12 +128,12 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
        */
       private def fetchNextPartition(): Boolean  = {
         if (diskIter.hasNext){
-            partition = diskIter.next()
-            rowIter = partition.getData()
-            true
+          partition = diskIter.next()
+          rowIter = partition.getData()
+          true
         }
         else {
-            false
+          false
         }
       }
     }

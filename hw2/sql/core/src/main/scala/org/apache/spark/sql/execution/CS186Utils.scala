@@ -105,7 +105,7 @@ object CS186Utils {
    * @return
    */
   def getUdfFromExpressions(expressions: Seq[Expression]): ScalaUdf = {
-    var result : Expression = null
+    var result : ScalaUdf = null
     for( exp <- expressions){
         if (exp.isInstanceOf[ScalaUdf]){
             result = exp
@@ -198,12 +198,13 @@ object CachingIteratorGenerator {
 
         def next() = {
           var curRow: Row = input.next()
+          var udfVal: Seq = null
           var key = cacheKeyProjection.apply(curRow)
           if (cache.containsKey(key)){
-            var udfVal = cache.get(key)
+            udfVal = cache.get(key)
           }
           else {
-            var udfVal = udfProject.apply(key)
+            udfVal = udfProject.apply(key)
             cache.put(key,udfVal)
           }
 
