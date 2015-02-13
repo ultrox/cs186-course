@@ -198,7 +198,7 @@ object CachingIteratorGenerator {
 
         def next() = {
           var curRow: Row = input.next()
-          var udfVal: Seq = _
+          var udfVal: Seq[Expression] = null
           var key = cacheKeyProjection.apply(curRow)
           if (cache.containsKey(key)){
             udfVal = cache.get(key)

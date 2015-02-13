@@ -200,10 +200,10 @@ private[sql] object DiskHashedRelation {
                 blockSize: Int = 64000) = {
     var disk_partition_array = new Array[DiskPartition](size)
     // Fill array with empty partitions
-    for( i <- 1 to size){
+    for( i <- 0 until size){
       var str_name = "" + i
       var tmp_partition = new DiskPartition(str_name, blockSize)
-      disk_partition_array.add(tmp_partition)
+      disk_partition_array(i) = (tmp_partition)
     }
 
     // Hashing the rows to partitions

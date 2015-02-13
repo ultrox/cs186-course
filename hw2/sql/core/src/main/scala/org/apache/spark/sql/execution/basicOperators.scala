@@ -118,7 +118,9 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
       def next() = {
         // IMPLEMENT ME
         var nextRow: Row = rowIter.next()
-        generator(nextRow)
+        //generator(nextRow)
+
+        nextRow.apply(generator)
       }
 
       /**
