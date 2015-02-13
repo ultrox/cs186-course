@@ -105,8 +105,8 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
     val rowIter :Iterator[Row]= null;
 
     new Iterator[Row] {
-      /*def hasNext() = {
-        if(rowIter.hasNext){
+      def hasNext() = {
+        /*if(rowIter.hasNext){
           true
         }
         else {
