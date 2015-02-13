@@ -97,30 +97,30 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
   def generateIterator(input: Iterator[Row]): Iterator[Row] = {
     // This is the key generator for the course-grained external hashing.
     val keyGenerator = CS186Utils.getNewProjection(projectList, child.output)
-
     val diskPartitions: DiskHashedRelation = DiskHashedRelation(input, keyGenerator)
     var diskIter = diskPartitions.getIterator()
     val generator: (Iterator[Row] => Iterator[Row]) = CS186Utils.generateCachingIterator(projectList, child.output)
 
+    val udf = CS186Utils.getUdfFromExpressions(projectList)
+    val udfIndex = projectList.indexOf(udf)
+    val preUdfExpressions = projectList.slice(0, udfIndex)
+    val postUdfExpressions = projectList.slice(udfIndex+1, projectList.length)
+    var cachedRowIter: Iterator[Row] = null
 
     new Iterator[Row] {
-      var partition: DiskPartition = new DiskPartition("",64)
-      var rowIter :Iterator[Row]= null
       def hasNext() = {
-        if(rowIter.hasNext){
-          true
+        var flag = true
+        if(cachedRowIter == null){
+          flag = fetchNextPartition()
         }
-        else {
-          fetchNextPartition()
-          false
+        while (flag && !cachedRowIter.hasNext) {
+          flag = fetchNextPartition()
         }
-        false
+        has
       }
 
       def next() = {
-        // IMPLEMENT ME
-        rowIter.next()
-        //nextRow.apply(generator)
+        cachedRowIter.next()
       }
 
       /**
@@ -130,17 +130,12 @@ case class PartitionProject(projectList: Seq[Expression], child: SparkPlan) exte
        * @return
        */
       private def fetchNextPartition(): Boolean  = {
-        if (diskIter.hasNext){
-          print(partition)
-          partition = diskIter.next()
-          rowIter = generator(partition.getData())
-          true
+        if (!diskIter.hasNext) {
+          return false
         }
-        else {
-          false
-        }
-        false
-      }
+        val partitionRows = diskIter.next().getData()
+        cachedRowIter = CachingIteratorGenerator(child.output, udf, preUdfExpressions, postUdfExpressions, child.output)(partitionRows)
+        true
     }
   }
 
