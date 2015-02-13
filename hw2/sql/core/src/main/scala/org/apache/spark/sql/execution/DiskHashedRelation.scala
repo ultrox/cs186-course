@@ -36,7 +36,7 @@ protected [sql] final class GeneralDiskHashedRelation(partitions: Array[DiskPart
     extends DiskHashedRelation with Serializable {
 
   override def getIterator() = {
-    partitions.iterator //.asScala
+    partitions.iterator.asScala
   }
 
   override def closeAllPartitions() = {
@@ -68,6 +68,7 @@ private[sql] class DiskPartition (
       spillPartitionToDisk() 
       data.clear()
       data.add(row)//this is correct, but after spilling to disk, you should clear data and add the current row to it
+      println(data)
     }
     else {
       data.add(row) 
