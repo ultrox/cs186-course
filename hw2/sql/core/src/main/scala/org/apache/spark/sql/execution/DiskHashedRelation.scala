@@ -117,10 +117,9 @@ private[sql] class DiskPartition (
       }
 
       override def hasNext() = {
-        if (currentIterator.hasNext {
+        if (currentIterator.hasNext) {
           fetchNextChunk()
-        }
-        else {
+        }else {
           true
         }
       }
@@ -132,7 +131,7 @@ private[sql] class DiskPartition (
        * @return true unless the iterator is empty.
        */
       private[this] def fetchNextChunk(): Boolean = {
-        if (chunkSizeIterator.hasNext {
+        if (chunkSizeIterator.hasNext) {
           var chunk_size = chunkSizeIterator.next()
           byteArray = CS186Utils.getNextChunkBytes(inStream, chunk_size, byteArray) //after doing this, you should get a list from this byte array using CS186Utils.getListFromBytes(byteArray), then get an iterator from the list and reassign it to currentIterator
           currentIterator = CS186Utils.getListFromBytes(byteArray).iterator
@@ -140,12 +139,10 @@ private[sql] class DiskPartition (
           if (chunk_size<=0)
           {
             false
-          }
-          else{
+          }else{
             true
           }//if chunk_size <= 0, you should return false
-        } 
-        else {
+        }else {
           false
         }
       }
