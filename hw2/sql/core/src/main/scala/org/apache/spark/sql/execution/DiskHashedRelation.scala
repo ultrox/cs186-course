@@ -69,7 +69,6 @@ private[sql] class DiskPartition (
         spillPartitionToDisk() 
         data.clear()
         data.add(row)//this is correct, but after spilling to disk, you should clear data and add the current row to it
-        println(data)
       }
       else {
         data.add(row) 
@@ -168,7 +167,6 @@ private[sql] class DiskPartition (
    * also be closed.
    */
   def closeInput() = {
-    println(data)
     if (! data.isEmpty()) // i didnt have written == false  (written == False && ! data.isEmpty()) 
       spillPartitionToDisk()
     //closePartition() //you don't have to do this -- i think closePartition() serves a different purpose. you can also close the outStream. ALso, clear data (data.clear())
