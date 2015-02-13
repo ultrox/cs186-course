@@ -219,7 +219,7 @@ private[sql] object DiskHashedRelation {
     }
 
     // Hashing the rows to partitions
-    for( row <- input.map(keyGenerator)){
+    for( row <- input){// row <- input.map(keyGenerator)){
       var hashed_partition = row.hashCode() % size
       disk_partition_array(hashed_partition).insert(row)
     }
