@@ -113,10 +113,7 @@ private[sql] class DiskPartition (
       var byteArray: Array[Byte] = null
 
       override def next() = {
-        if (currentIterator.hasNext)
-          currentIterator.next()
-        else
-          null
+        null
       }
 
       override def hasNext() = {
