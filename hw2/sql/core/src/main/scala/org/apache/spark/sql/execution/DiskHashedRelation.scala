@@ -203,7 +203,8 @@ private[sql] object DiskHashedRelation {
     for( i <- 0 until size){
       var str_name = "" + i
       var tmp_partition = new DiskPartition(str_name, blockSize)
-      disk_partition_array(i) = (tmp_partition)
+      var part: DiskPartition = disk_partition_array(i) 
+      part.insert(tmp_partition)
     }
 
     // Hashing the rows to partitions
