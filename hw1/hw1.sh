@@ -1,4 +1,5 @@
 #!/bin/bash
+<<<<<<< HEAD
 #bash command-line arguments are accessible as $0 (the bash script) $1, etc.
 #echo "running" $0 "on" $1
 
@@ -18,3 +19,8 @@ cat tokens.csv |  cut -d ',' -f2 | tail -n+2 | sort | uniq -c | sort -n -r | awk
 cat popular_names.txt | tr '[:upper:]' '[:lower:]'| grep -iwf ./popular_names.txt ./token_counts.csv >> name_counts.csv
 
 exit 0
+=======
+# bash command-line arguments are accessible as $0 (the bash script), $1, etc.
+# echo "Running" $0 "on" $1
+echo "Replace the contents of this file with your solution."
+>>>>>>> 17c53cf9e6dac7a277390abfee31b6b10e393f29
