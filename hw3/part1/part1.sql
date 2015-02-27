@@ -38,33 +38,38 @@ AS
 -- Question 2
 CREATE VIEW q2(from_name, to_name)
 AS
-  WITH init_tbl(comm1,comm2) AS (SELECT B.cmte_id, C.cmte_id
+  WITH comms1(id,name) AS ( SELECT comm_cont.cmte_id, comm.name
+                   FROM committee_contributions AS comm_cont
+                   INNER JOIN committees as comm
+                     ON comm.id = comm_cont.cmte_id
+                     AND comm.pty_affiliation = 'DEM'),
+       comms2(id,name) AS ( SELECT comm_cont.cmte_id, comm.name
+                   FROM committee_contributions AS comm_cont
+                   INNER JOIN committees as comm
+                     ON comm.id = comm_cont.cmte_id
+                     AND comm.pty_affiliation = 'DEM')
+
+
+  SELECT comms1.name, comms2.name
   FROM intercommittee_transactions AS A
-  INNER JOIN committee_contributions AS B
-    ON B.cmte_id = A.cmte_id
-  INNER JOIN committee_contributions AS C
-    ON C.cmte_id = A.other_id)
-  SELECT 
-  FROM init_tbl
-  INNER JOIN committees AS comm
-    AND comm.id = init_tbl.comm1
-    AND comm.pty_affiliation = DEM
-  INNER JOIN committees AS comm
-    AND comm.id = init_tbl.comm2
-    AND comm.pty_affiliation = DEM
+  INNER JOIN comms1
+    ON comms1.id = A.cmte_id
+  INNER JOIN comms2
+    ON comms2.id = A.cmte_id
 ;
 
 -- Question 3
 CREATE VIEW q3(name)
 AS
-  SELECT C.name
+  SELECT DISTINCT C.name
   FROM  committee_contributions AS C
-  WHERE C.cmte_id NOT IN 
+  MINUS --testing without the WHERE C.cmte_id NOT IN
     (SELECT A.cmte_id
      FROM intercommittee_transactions AS A
      INNER JOIN committee_contributions AS B
        ON A.other_id = B.cmte_id
-       AND B.name = 'OBAMA, BARACK')-- replace this line
+       AND B.name = 'OBAMA, BARACK')
+  GROUP BY C.name-- replace this line
 ;
 
 -- Question 4.
@@ -85,8 +90,8 @@ AS
 CREATE VIEW q5 (name, total_pac_donations) AS
   WITH full_comms(id, name) AS ( SELECT A.id, A.name
                                  FROM committees AS A
-                                 GROUP BY A.id )
-  WITH indiv_cont(id, amt) AS ( SELECT B.cmte_id, SUM(B.transaction_amt)
+                                 GROUP BY A.id ), 
+  indiv_cont(id, amt) AS ( SELECT B.cmte_id, SUM(B.transaction_amt)
                                 FROM individual_contributions AS B
                                 WHERE B.entity_tp = 'ORG'
                                 GROUP BY B.cmte_id)
@@ -102,8 +107,8 @@ CREATE VIEW q6 (id) AS
                    FROM committee_contributions AS A
                    WHERE A.cand_id IS NOT NULL
                      AND A.entity_tp = 'PAC'
-                   GROUP BY A.cand_id )
-  WITH comm2 AS ( SELECT B.cand_id
+                   GROUP BY A.cand_id ), 
+  comm2 AS ( SELECT B.cand_id
              FROM committee_contributions AS B
              WHERE B.cand_id IS NOT NULL
               AND B.entity_tp = 'CCM'
@@ -119,8 +124,7 @@ CREATE VIEW q7 (cand_name1, cand_name2) AS
     WITH tbl1(cmte_id,cand_id,name) AS (SELECT comm_cont.cmte_id, comm_cont.cand_id, cands.name
           FROM committee_contributions AS comm_cont, candidates AS cands
           WHERE comm_cont.state = 'RI'
-            AND cands.id  = comm_cont.cand_id)
-    WITH tbl2(cmte_id,cand_id,name) AS (SELECT comm_cont.cmte_id, comm_cont.cand_id, cands.name
+            AND cands.id  = comm_cont.cand_id), tbl2(cmte_id,cand_id,name) AS (SELECT comm_cont.cmte_id, comm_cont.cand_id, cands.name
           FROM committee_contributions AS comm_cont, candidates AS cands
           WHERE comm_cont.state = 'RI'
             AND cands.id  = comm_cont.cand_id)
