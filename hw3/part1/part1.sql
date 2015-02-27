@@ -47,25 +47,22 @@ AS
   SELECT c1.name, c2.name
   FROM intercommittee_transactions AS A
   INNER JOIN comms1 AS c1
-    ON comms1.id = A.cmte_id
+    ON c1.id = A.cmte_id
   INNER JOIN comms1 AS c2
-    ON comms1.id = A.other_id
+    ON c2.id = A.other_id
 ;
 
 -- Question 3
 CREATE VIEW q3(name)
 AS
-  WITH inter_comm(id) AS (SELECT A.cmte_id
+  WITH inter_comm(id) AS (SELECT A.cmte_id, B.name
                            FROM intercommittee_transactions AS A
                            INNER JOIN committee_contributions AS B
                              ON A.other_id = B.cmte_id
                              AND B.name = 'OBAMA, BARACK')
   SELECT DISTINCT C.name
-  FROM committee_contributions AS C
-  LEFT JOIN inter_comm
-    ON C.cmte_id = inter_comm.id
-    WHERE inter_comm.id IS NULL
-  GROUP BY C.name-- replace this line
+  FROM inter_comm AS C
+  -- replace this line
 ;
 
 -- Question 4.
