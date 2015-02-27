@@ -84,7 +84,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                     SELECT P.nodes || E.nodes 
                     INTO tmp
                     FROM PATHS AS P
-                    INNER JOIN EDGES AS E
+                    INNER JOIN EDGE AS E
                       ON P.nodes[array_length(P.nodes,1)] = E.nodes[0];
 
                     DROP TABLE IF EXISTS paths CASCADE;
