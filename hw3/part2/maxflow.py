@@ -81,7 +81,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
             # Hints: a JOIN would be helpful here. Also check the documentation to
             # see how array concatenation work in Postgres.
             db.execute("""
-                    SELECT P.nodes || E.dst 
+                    SELECT (P.nodes || E.dst) AS nodes
                     INTO tmp
                     FROM PATHS AS P
                     INNER JOIN EDGE AS E
@@ -92,7 +92,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                     CREATE VIEW terminated_paths AS
                         SELECT *
                         FROM paths
-                        WHERE paths.nodes[array_length(paths.nodes,1)] = (SELECT MAX(id) FROM node);
+                        WHERE nodes[array_length(paths.nodes,1)] = (SELECT MAX(id) FROM node);
                     """)
 
             # If we've exhausted all potential paths and found nothing, we terminate
