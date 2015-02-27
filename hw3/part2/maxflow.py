@@ -85,7 +85,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                     INTO tmp
                     FROM PATHS AS P
                     INNER JOIN EDGE AS E
-                      ON P.paths[array_length(P.nodes,1)] = E.id;
+                      ON P.path[array_length(P.nodes,1)] = E.id;
 
                     DROP TABLE IF EXISTS paths CASCADE;
                     ALTER TABLE tmp RENAME TO paths;
