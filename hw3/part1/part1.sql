@@ -44,12 +44,13 @@ AS
                      ON comm.id = comm_cont.cmte_id
                      AND comm.pty_affiliation = 'DEM')
 
-  SELECT c1.name, c2.name
+  SELECT DISTINCT c1.name, c2.name
   FROM intercommittee_transactions AS A
   INNER JOIN comms1 AS c1
     ON c1.id = A.cmte_id
   INNER JOIN comms1 AS c2
     ON c2.id = A.other_id
+  GROUP BY c1.name,c2.name
   LIMIT 10
 ;
 
