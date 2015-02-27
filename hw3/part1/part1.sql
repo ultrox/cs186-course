@@ -44,25 +44,28 @@ AS
                      ON comm.id = comm_cont.cmte_id
                      AND comm.pty_affiliation = 'DEM')
 
-  SELECT TOP 10 c1.name, c2.name
+  SELECT c1.name, c2.name
   FROM intercommittee_transactions AS A
   INNER JOIN comms1 AS c1
     ON c1.id = A.cmte_id
   INNER JOIN comms1 AS c2
     ON c2.id = A.other_id
+  LIMIT 10
 ;
 
 -- Question 3
 CREATE VIEW q3(name)
 AS
-  WITH inter_comm(id) AS (SELECT A.cmte_id, B.name
+  WITH inter_comm(id,name) AS (SELECT A.cmte_id, B.name
                            FROM intercommittee_transactions AS A
                            INNER JOIN committee_contributions AS B
                              ON A.other_id = B.cmte_id
                              AND B.name = 'OBAMA, BARACK')
   SELECT DISTINCT C.name
   FROM committee_contributions AS C
-  WHERE C.cmte_id NOT IN (inter_comm)
+  LEFT JOIN inter_comm
+    ON C.cmte_id = inter_comm.id
+    WHERE inter_comm.id IS NULL
   GROUP BY C.name
   -- replace this line
 ;
