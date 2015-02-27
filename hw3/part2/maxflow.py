@@ -81,9 +81,11 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
             # Hints: a JOIN would be helpful here. Also check the documentation to
             # see how array concatenation work in Postgres.
             db.execute("""
-                    SELECT ???
+                    SELECT P.nodes || E.nodes 
                     INTO tmp
-                    ???;
+                    FROM PATHS AS P
+                    INNER JOIN EDGES AS E
+                      ON P.nodes[array_length(P.nodes,1)] = E.nodes[0]
 
                     DROP TABLE IF EXISTS paths CASCADE;
                     ALTER TABLE tmp RENAME TO paths;
@@ -118,8 +120,11 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                 SELECT unnest(path) AS path_edge FROM chosen_route
             ),
             constraining_capacity(capacity) AS (
-                ???
-            )
+                SELECT MIN(CR.edges.capacity) 
+                FROM chosen_route AS CR
+                INNER JOIN EDGE AS E
+                  ON E.edges.id = CR.edges.id
+                )
             SELECT path_edge AS edge_id, (SELECT * FROM constraining_capacity) as flow 
             INTO flow_to_route FROM path_edges;
         """)
@@ -128,12 +133,20 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
         # Then, update the `edges` table
         db.execute("""
             WITH updates(id, new_capacity) AS (
-                ???
+                SELECT FE.forward_id, -FTR.flow
+                FROM flow_to_route AS FTR
+                INNER JOIN flip_edge AS FE
+                  ON FE.forward_id = FTR.edge_id
+                UNION
+                SELECT FE.reverse_id, +FTR.flow
+                FROM flow_to_route AS FTR
+                INNER JOIN flip_edge AS FE
+                  ON FE.reverse_id = FTR.edge_id
             )
             UPDATE edge
-              SET ???
+              SET capacity = edge.capacity+updates.new_capacity
               FROM updates
-              WHERE ???;
+              WHERE updates.id = edge.id
             """)
 
         # DO NOT EDIT
