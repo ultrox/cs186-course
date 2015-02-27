@@ -85,7 +85,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                     INTO tmp
                     FROM PATHS AS P
                     INNER JOIN EDGES AS E
-                      ON P.nodes[array_length(P.nodes,1)] = E.nodes[0]
+                      ON P.nodes[array_length(P.nodes,1)] = E.nodes[0];
 
                     DROP TABLE IF EXISTS paths CASCADE;
                     ALTER TABLE tmp RENAME TO paths;
@@ -146,7 +146,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
             UPDATE edge
               SET capacity = edge.capacity+updates.new_capacity
               FROM updates
-              WHERE updates.id = edge.id
+              WHERE updates.id = edge.id;
             """)
 
         # DO NOT EDIT
