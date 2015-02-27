@@ -42,11 +42,6 @@ AS
                    FROM committee_contributions AS comm_cont
                    INNER JOIN committees as comm
                      ON comm.id = comm_cont.cmte_id
-                     AND comm.pty_affiliation = 'DEM'),
-       comms2(id,name) AS ( SELECT comm_cont.cmte_id, comm.name
-                   FROM committee_contributions AS comm_cont
-                   INNER JOIN committees as comm
-                     ON comm.id = comm_cont.cmte_id
                      AND comm.pty_affiliation = 'DEM')
 
 
@@ -54,17 +49,16 @@ AS
   FROM intercommittee_transactions AS A
   INNER JOIN comms1
     ON comms1.id = A.cmte_id
-  INNER JOIN comms2
-    ON comms2.id = A.cmte_id
+  INNER JOIN comms1
+    ON comms1.id = A.other_id
 ;
 
 -- Question 3
 CREATE VIEW q3(name)
 AS
   SELECT DISTINCT C.name
-  FROM  committee_contributions AS C
-  MINUS --testing without the WHERE C.cmte_id NOT IN
-    (SELECT A.cmte_id
+  FROM committee_contributions AS C
+  WHERE C.cmte_id NOT IN (SELECT A.cmte_id
      FROM intercommittee_transactions AS A
      INNER JOIN committee_contributions AS B
        ON A.other_id = B.cmte_id
@@ -113,7 +107,7 @@ CREATE VIEW q6 (id) AS
              WHERE B.cand_id IS NOT NULL
               AND B.entity_tp = 'CCM'
              GROUP BY B.cand_id)
-  SELECT DISTINCT cand_id
+  SELECT DISTINCT comm1.cand_id
   FROM comm1
   INNER JOIN comm2
     ON comm1.cand_id = comm2.cand_id
@@ -128,7 +122,7 @@ CREATE VIEW q7 (cand_name1, cand_name2) AS
           FROM committee_contributions AS comm_cont, candidates AS cands
           WHERE comm_cont.state = 'RI'
             AND cands.id  = comm_cont.cand_id)
-    SELECT tbl1.name,tbl2.name
+    SELECT DISTINCT tbl1.name,tbl2.name
     FROM tbl1
     INNER JOIN tbl2
       ON  tbl1.cmte_id  = tbl2.cmte_id
