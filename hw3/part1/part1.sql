@@ -50,22 +50,25 @@ AS
     ON c1.id = A.cmte_id
   INNER JOIN comms1 AS c2
     ON c2.id = A.other_id
-  GROUP BY c1.name,c2.name
   LIMIT 10
 ;
 
 -- Question 3
 CREATE VIEW q3(name)
 AS
-  WITH inter_comm(id,name) AS (SELECT A.cmte_id, B.name
+  WITH inter_comm(cmte_id, cand_id) AS (SELECT A.cmte_id,B.cand_id
                            FROM intercommittee_transactions AS A
                            INNER JOIN committee_contributions AS B
                              ON A.other_id = B.cmte_id
-                             AND B.name = 'OBAMA, BARACK')
+                             AND A.entity_tp = 'COM'
+                             AND B.cand_id IS NOT NULL)
   SELECT DISTINCT C.name
   FROM committee_contributions AS C
-  LEFT JOIN inter_comm
-    ON C.cmte_id = inter_comm.id
+  LEFT JOIN obama_tbl(cmte_id) AS (SELECT inter_comm.cmte_id
+                          FROM inter_comm, candidates AS cands
+                          WHERE inter_comm.cand_id = cands.id
+                            AND cands.name = 'OBAMA, BARACK')
+    ON C.cmte_id = obama_tbl.cmte_id
     WHERE inter_comm.id IS NULL
   GROUP BY C.name
   -- replace this line
