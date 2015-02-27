@@ -44,7 +44,7 @@ AS
                      ON comm.id = comm_cont.cmte_id
                      AND comm.pty_affiliation = 'DEM')
 
-  SELECT c1.name, c2.name
+  SELECT TOP 10 c1.name, c2.name
   FROM intercommittee_transactions AS A
   INNER JOIN comms1 AS c1
     ON c1.id = A.cmte_id
@@ -61,7 +61,9 @@ AS
                              ON A.other_id = B.cmte_id
                              AND B.name = 'OBAMA, BARACK')
   SELECT DISTINCT C.name
-  FROM inter_comm AS C
+  FROM committee_contributions AS C
+  WHERE C.cmte_id NOT IN (inter_comm)
+  GROUP BY C.name
   -- replace this line
 ;
 
