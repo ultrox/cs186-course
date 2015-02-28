@@ -85,7 +85,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                     FROM paths, edge
                     WHERE edge.capacity != 0
                       AND paths.path[array_length(P.path,1)] == edge.src
-                      AND NOT (edge.dst = ANY paths.path)
+                      AND NOT (edge.dst && paths.path)
                     UNION
                     SELECT *
                     FROM terminated_paths
