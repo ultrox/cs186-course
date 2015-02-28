@@ -143,11 +143,13 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                 SELECT E.id, E.capacity-FTR.flow
                 FROM edge E, flow_to_route AS FTR
                 WHERE E.id = FTR.edge_id
+                  AND E.capacity > 0 
                 UNION
                 SELECT FE.reverse_id, ED.capacity+FTR.flow
                 FROM edge ED, flow_to_route AS FTR, flip_edge AS FE
                 WHERE FE.reverse_id = ED.id
                   AND FTR.edge_id  = FE.forward_id
+                  AND E.capacity > 0 
             )
             UPDATE edge
               SET capacity = updates.new_capacity
