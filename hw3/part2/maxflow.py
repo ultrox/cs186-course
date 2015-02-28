@@ -84,11 +84,12 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                     WITH almost_done AS (SELECT (array_append(paths.path, e1.id)) AS path, (array_append(paths.nodes, e1.dst)) AS nodes
                                         FROM paths, edge e1
                                         WHERE e1.capacity != 0
-                                          AND paths.path[array_length(paths.path,1)] = e1.src
+                                          AND paths.nodes[array_length(paths.nodes,1)] = e1.src
                                           AND (e1.dst != ALL(paths.path))
                                         UNION
                                         SELECT *
-                                        FROM terminated_paths)
+                                        FROM paths
+                                        WHERE paths.nodes[array_length(paths.nodes,1)] = (SELECT MAX(id) FROM node); )
                     SELECT * 
                     INTO tmp
                     FROM almost_done;
@@ -126,10 +127,10 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                 SELECT unnest(path) AS path_edge FROM chosen_route
             ),
             constraining_capacity(capacity) AS (
-                SELECT MIN(PE.path_edge.capacity) 
+                SELECT MIN(E.edges.capacity) 
                 FROM chosen_route AS CR
-                LEFT JOIN path_edges AS PE
-                  ON PE.path_edge = ALL(CR.path)
+                INNER JOIN EDGE AS E
+                  ON E.edges.id  CR.nodes
                 )
             SELECT path_edge AS edge_id, (SELECT * FROM constraining_capacity) as flow 
             INTO flow_to_route FROM path_edges;
