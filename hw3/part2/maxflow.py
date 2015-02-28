@@ -88,7 +88,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                       AND NOT (edge.dst && paths.path)
                     UNION
                     SELECT *
-                    FROM terminated_paths
+                    FROM terminated_paths;
 
                     DROP TABLE IF EXISTS paths CASCADE;
                     ALTER TABLE tmp RENAME TO paths;
