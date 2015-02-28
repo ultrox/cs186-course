@@ -38,40 +38,13 @@ AS
 -- Question 2
 CREATE VIEW q2(from_name, to_name)
 AS
-  WITH comms1(id,name) AS ( SELECT comm_cont.cmte_id, comm.name
-                   FROM committee_contributions AS comm_cont
-                   INNER JOIN committees as comm
-                     ON comm.id = comm_cont.cmte_id
-                     AND comm.pty_affiliation = 'DEM')
-
-  SELECT DISTINCT c1.name, c2.name
-  FROM intercommittee_transactions AS A
-  INNER JOIN comms1 AS c1
-    ON c1.id = A.cmte_id
-  INNER JOIN comms1 AS c2
-    ON c2.id = A.other_id
-  LIMIT 10
+  SELECT 1,1
 ;
 
 -- Question 3
 CREATE VIEW q3(name)
 AS
-  WITH inter_comm(cmte_id, cand_id) AS (SELECT A.cmte_id,B.cand_id
-                           FROM intercommittee_transactions AS A
-                           INNER JOIN committee_contributions AS B
-                             ON A.other_id = B.cmte_id
-                             AND A.entity_tp = 'COM'
-                             AND B.cand_id IS NOT NULL)
-  SELECT DISTINCT C.name
-  FROM committee_contributions AS C
-  LEFT JOIN obama_tbl(cmte_id) AS (SELECT inter_comm.cmte_id
-                          FROM inter_comm, candidates AS cands
-                          WHERE inter_comm.cand_id = cands.id
-                            AND cands.name = 'OBAMA, BARACK')
-    ON C.cmte_id = obama_tbl.cmte_id
-    WHERE inter_comm.id IS NULL
-  GROUP BY C.name
-  -- replace this line
+  SELECT 1-- replace this line
 ;
 
 -- Question 4.
