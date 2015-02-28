@@ -97,8 +97,8 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                     ALTER TABLE tmp RENAME TO paths;
                     CREATE VIEW terminated_paths AS
                         SELECT *
-                        FROM paths AS P1
-                        WHERE P1.nodes[array_length(P1.nodes,1)] = (SELECT MAX(id) FROM node);
+                        FROM paths
+                        WHERE nodes[array_length(nodes,1)] = (SELECT MAX(id) FROM node);
                     """)
 
             # If we've exhausted all potential paths and found nothing, we terminate
