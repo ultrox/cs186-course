@@ -82,10 +82,10 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
             # see how array concatenation work in Postgres.
             db.execute("""
                     SELECT array_append(paths.path, edge.id), array_append(paths.nodes, edge.dst)
-                    FROM paths, edge
-                    WHERE edge.capacity != 0
-                      AND paths.path[array_length(paths.path,1)] == edge.src.id
-                      AND NOT (edge.dst && paths.path)
+                    FROM paths, edge e1
+                    WHERE e1.capacity != 0
+                      AND paths.path[array_length(paths.path,1)] == e1.src
+                      AND NOT (e1.dst && paths.path)
                     UNION
                     SELECT *
                     FROM terminated_paths;
