@@ -89,7 +89,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                                         UNION
                                         SELECT *
                                         FROM paths
-                                        WHERE paths.nodes[array_length(paths.nodes,1)] = (SELECT MAX(id) FROM node); )
+                                        WHERE paths.nodes[array_length(paths.nodes,1)] = (SELECT MAX(id) FROM node))
                     SELECT * 
                     INTO tmp
                     FROM almost_done;
