@@ -81,11 +81,14 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
             # Hints: a JOIN would be helpful here. Also check the documentation to
             # see how array concatenation work in Postgres.
             db.execute("""
-                    SELECT (P.path || E.dst) AS nodes
-                    INTO tmp
-                    FROM PATHS AS P
-                    INNER JOIN EDGE AS E
-                      ON P.path[array_length(P.nodes,1)] = E.id;
+                    SELECT array_append(paths.path, edge.id), array_append(paths.nodes, edge.dst)
+                    FROM paths, edge
+                    WHERE edge.capacity != 0
+                      AND paths.path[array_length(P.path,1)] == edge.src
+                      AND NOT (edge.dst = ANY paths.path)
+                    UNION
+                    SELECT *
+                    FROM terminated_paths
 
                     DROP TABLE IF EXISTS paths CASCADE;
                     ALTER TABLE tmp RENAME TO paths;
