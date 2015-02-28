@@ -140,18 +140,18 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
         # Then, update the `edges` table
         db.execute("""
             WITH updates(id, new_capacity) AS (
-                SELECT FE.forward_id, -FTR.flow
-                FROM flow_to_route AS FTR
+                SELECT FE.forward_id, E.capacity-FTR.flow
+                FROM edge E, (flow_to_route AS FTR
                 INNER JOIN flip_edge AS FE
-                  ON FE.forward_id = FTR.edge_id
+                  ON FE.forward_id = FTR.edge_id)
                 UNION
-                SELECT FE.reverse_id, +FTR.flow
-                FROM flow_to_route AS FTR
+                SELECT FE.reverse_id, E.capacity+FTR.flow
+                FROM edge E,(flow_to_route AS FTR
                 INNER JOIN flip_edge AS FE
-                  ON FE.reverse_id = FTR.edge_id
+                  ON FE.reverse_id = FTR.edge_id)
             )
             UPDATE edge
-              SET capacity = edge.capacity+updates.new_capacity
+              SET capacity = updates.new_capacity
               FROM updates
               WHERE updates.id = edge.id;
             """)
