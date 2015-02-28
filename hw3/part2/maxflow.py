@@ -148,7 +148,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                 FROM edge ED
                 INNER JOIN flip_edge AS FE
                   ON FE.reverse_id = ED.id
-                INNER JOIN flow_to_route AS FTR
+                JOIN flow_to_route AS FTR
                   ON FTR.edge_id  = FE.forward_id
             )
             UPDATE edge
