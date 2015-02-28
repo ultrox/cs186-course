@@ -84,7 +84,7 @@ def maxflow(bfs_max_iterations=float('inf'), flow_max_iterations=float('inf')):
                     SELECT array_append(paths.path, edge.id), array_append(paths.nodes, edge.dst)
                     FROM paths, edge
                     WHERE edge.capacity != 0
-                      AND paths.path[array_length(P.path,1)] == edge.src
+                      AND paths.path[array_length(paths.path,1)] == edge.src
                       AND NOT (edge.dst && paths.path)
                     UNION
                     SELECT *
