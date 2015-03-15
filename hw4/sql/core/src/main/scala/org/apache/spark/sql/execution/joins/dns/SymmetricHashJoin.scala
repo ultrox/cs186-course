@@ -55,15 +55,15 @@ trait SymmetricHashJoin {
    * e.g., `new JoinedRow(row1, row2)`
    *
    * @param leftIter an iterator for the left input
-   * @param rightIter an iterator for th right input
+   * @param rightIter an iterator for the right input
    * @return iterator for the result of the join
    */
   protected def symmetricHashJoin(leftIter: Iterator[Row], rightIter: Iterator[Row]): Iterator[Row] = {
     new Iterator[Row] {
       /* Remember that Scala does not have any constructors. Whatever code you write here serves as a constructor. */
       // IMPLEMENT ME
-      val leftHM:      HashMap[Row] = new HashMap
-      val rightHM:     HashMap[Row] = new HashMap
+      val leftHM:      HashMap[Projection, Row] = new HashMap[Projection, Row]()
+      val rightHM:     HashMap[Projection, Row] = new HashMap[Projection, Row]()
       var isLeftInner: Boolean = true
       var hasValue:    Boolean = false
       var nextValue:   JoinedRow
@@ -77,10 +77,11 @@ trait SymmetricHashJoin {
         // IMPLEMENT ME
         if (findNextMatch) {
           hasValue = false
-          nextValue
+          return nextValue
         }
         else {
           switchRelations()
+          return null
         }
       }
 
@@ -92,10 +93,10 @@ trait SymmetricHashJoin {
       override def hasNext() = {
         // IMPLEMENT ME
         // Ensures that both the innerIter and outerIter have more values, 
-        if (innerIter.hasNext() || outerIter.hasNext()){
-          true
+        if (leftIter.hasNext() || rightIter.hasNext()){
+          return true
         }
-        false
+        return false
       }
 
       /**
@@ -115,17 +116,17 @@ trait SymmetricHashJoin {
       def findNextMatch(): Boolean = {
         // IMPLEMENT ME
         if(isLeftInner){
-          probeAndInsert(leftIter.next(), leftHT, rightHT, leftKeyGenerator)
-          hasValue
+          probeAndInsert(leftIter.next(), leftHT, rightHM, leftKeyGenerator)
+          return hasValue
         }
         else {
-          probeAndInsert(rightIter.next(), rightHT, leftHT, rightKeyGenerator)
-          hasValue
+          probeAndInsert(rightIter.next(), rightHT, leftHM, rightKeyGenerator)
+          return hasValue
         }
       }
 
-      def probeAndInsert(tuple : Row, insertHT : HashMap, probeHT : HashMap, generator : Projection) = {
-        var projectionOfTuple: Int = generator(tuple) //this is the key; Row is the value
+      def probeAndInsert(tuple : Row, insertHT : HashMap[Projection, Row], probeHT : HashMap[Projection, Row], generator : Projection) = {
+        var projectionOfTuple = generator(tuple) //this is the key; Row is the value
         insertHT+= (projectionOfTuple -> tuple)
         var keyExists: Boolean = probeHT.contains(tuple.key)
         if (keyExists){
