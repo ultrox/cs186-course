@@ -117,14 +117,18 @@ trait SymmetricHashJoin {
        */
       def findNextMatch(): Boolean = {
         // IMPLEMENT ME
-        if(isLeftInner){
-          probeAndInsert(leftIter.next(), leftHM, rightHM, leftKeyGenerator)
-          return hasValue
+        if (hasNext){
+          if(isLeftInner && leftIter.hasNext){
+            probeAndInsert(leftIter.next(), leftHM, rightHM, leftKeyGenerator)
+            return hasValue
+          }
+          else if(rightIter.hasNext) {
+            probeAndInsert(rightIter.next(), rightHM, leftHM, rightKeyGenerator)
+            return hasValue
+          }
+          return false
         }
-        else {
-          probeAndInsert(rightIter.next(), rightHM, leftHM, rightKeyGenerator)
-          return hasValue
-        }
+        return false
       }
 
       def probeAndInsert(tuple : Row, insertHT : HashMap[Row, Row], probeHT : HashMap[Row, Row], generator : Projection) = {
