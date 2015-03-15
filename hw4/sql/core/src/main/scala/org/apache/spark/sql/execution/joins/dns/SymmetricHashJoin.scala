@@ -62,6 +62,11 @@ trait SymmetricHashJoin {
     new Iterator[Row] {
       /* Remember that Scala does not have any constructors. Whatever code you write here serves as a constructor. */
       // IMPLEMENT ME
+      val leftHM:      HashMap[Row] = new HashMap
+      val rightHM:     HashMap[Row] = new HashMap
+      var isLeftInner: Boolean = true
+      var hasValue:    Boolean = false
+      var nextValue:   JoinedRow
 
       /**
        * This method returns the next joined tuple.
@@ -70,6 +75,13 @@ trait SymmetricHashJoin {
        */
       override def next() = {
         // IMPLEMENT ME
+        if (findNextMatch) {
+          hasValue = false
+          nextValue
+        }
+        else {
+          switchRelations()
+        }
       }
 
       /**
@@ -79,6 +91,11 @@ trait SymmetricHashJoin {
        */
       override def hasNext() = {
         // IMPLEMENT ME
+        // Ensures that both the innerIter and outerIter have more values, 
+        if (innerIter.hasNext() || outerIter.hasNext()){
+          true
+        }
+        false
       }
 
       /**
@@ -86,6 +103,8 @@ trait SymmetricHashJoin {
        */
       private def switchRelations() = {
         // IMPLEMENT ME
+        // Swaps the pointing Boolean to the inner relation. 
+        isLeftInner = !isLeftInner
       }
 
       /**
@@ -95,6 +114,27 @@ trait SymmetricHashJoin {
        */
       def findNextMatch(): Boolean = {
         // IMPLEMENT ME
+        if(isLeftInner){
+          probeAndInsert(leftIter.next(), leftHT, rightHT, leftKeyGenerator)
+          hasValue
+        }
+        else {
+          probeAndInsert(rightIter.next(), rightHT, leftHT, rightKeyGenerator)
+          hasValue
+        }
+      }
+
+      def probeAndInsert(tuple : Row, insertHT : HashMap, probeHT : HashMap, generator : Projection) = {
+        var projectionOfTuple: Int = generator(tuple) //this is the key; Row is the value
+        insertHT+= (projectionOfTuple -> tuple)
+        var keyExists: Boolean = probeHT.contains(tuple.key)
+        if (keyExists){
+          nextValue = new JoinedRow(tuple, probeHT.get(tuple.key))
+          hasValue = true
+        }
+        else{
+          hasValue = false
+        }
       }
     }
   }
