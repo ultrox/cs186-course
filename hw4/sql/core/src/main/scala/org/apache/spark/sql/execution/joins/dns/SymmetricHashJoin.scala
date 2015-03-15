@@ -132,7 +132,8 @@ trait SymmetricHashJoin {
         insertHT+= (projectionOfTuple -> tuple)
         var keyExists: Boolean = probeHT.contains(projectionOfTuple)
         if (keyExists){
-          nextValue = new JoinedRow(tuple, probeHT.get(projectionOfTuple))
+          var probeValue: Row = probeHT.get(projectionOfTuple)
+          nextValue = new JoinedRow(tuple, probeValue )
           hasValue = true
         }
         else{
