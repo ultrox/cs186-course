@@ -93,7 +93,7 @@ trait SymmetricHashJoin {
       override def hasNext() = {
         // IMPLEMENT ME
         // Ensures that both the innerIter and outerIter have more values, 
-        if (leftIter.hasNext || rightIter.hasNext{
+        if (leftIter.hasNext || rightIter.hasNext){
           return true
         }
         else{ 

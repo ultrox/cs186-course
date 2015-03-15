@@ -74,6 +74,7 @@ trait DNSJoin {
        */
       override def next() = {
         // IMPLEMENT ME
+        null
       }
 
       /**
@@ -83,6 +84,7 @@ trait DNSJoin {
        */
       override def hasNext() = {
         // IMPLEMENT ME
+        false
       }
 
 
@@ -91,6 +93,7 @@ trait DNSJoin {
        */
       private def makeRequest() = {
         // IMPLEMENT ME
+        null
       }
     }
   }
