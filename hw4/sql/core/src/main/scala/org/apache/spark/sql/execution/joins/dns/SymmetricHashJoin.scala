@@ -66,7 +66,7 @@ trait SymmetricHashJoin {
       val rightHM:     HashMap[Projection, Row] = new HashMap[Projection, Row]()
       var isLeftInner: Boolean = true
       var hasValue:    Boolean = false
-      var nextValue:   JoinedRow
+      var nextValue:   JoinedRow = null
 
       /**
        * This method returns the next joined tuple.
@@ -93,10 +93,12 @@ trait SymmetricHashJoin {
       override def hasNext() = {
         // IMPLEMENT ME
         // Ensures that both the innerIter and outerIter have more values, 
-        if (leftIter.hasNext() || rightIter.hasNext()){
+        if (leftIter.hasNext || rightIter.hasNext{
           return true
         }
-        return false
+        else{ 
+          return false
+        }
       }
 
       /**
@@ -116,21 +118,22 @@ trait SymmetricHashJoin {
       def findNextMatch(): Boolean = {
         // IMPLEMENT ME
         if(isLeftInner){
-          probeAndInsert(leftIter.next(), leftHT, rightHM, leftKeyGenerator)
+          probeAndInsert(leftIter.next(), leftHM, rightHM, leftKeyGenerator)
           return hasValue
         }
         else {
-          probeAndInsert(rightIter.next(), rightHT, leftHM, rightKeyGenerator)
+          probeAndInsert(rightIter.next(), rightHM, leftHM, rightKeyGenerator)
           return hasValue
         }
       }
 
       def probeAndInsert(tuple : Row, insertHT : HashMap[Projection, Row], probeHT : HashMap[Projection, Row], generator : Projection) = {
         var projectionOfTuple = generator(tuple) //this is the key; Row is the value
+        println(projectionOfTuple.getClass)
         insertHT+= (projectionOfTuple -> tuple)
-        var keyExists: Boolean = probeHT.contains(tuple.key)
+        var keyExists: Boolean = probeHT.contains(projectionOfTuple)
         if (keyExists){
-          nextValue = new JoinedRow(tuple, probeHT.get(tuple.key))
+          nextValue = new JoinedRow(tuple, probeHT.get(projectionOfTuple))
           hasValue = true
         }
         else{
