@@ -62,8 +62,8 @@ trait SymmetricHashJoin {
     new Iterator[Row] {
       /* Remember that Scala does not have any constructors. Whatever code you write here serves as a constructor. */
       // IMPLEMENT ME
-      val leftHM:      HashMap[Projection, Row] = new HashMap[Projection, Row]()
-      val rightHM:     HashMap[Projection, Row] = new HashMap[Projection, Row]()
+      val leftHM:      HashMap[Row, Row] = new HashMap[Row, Row]()
+      val rightHM:     HashMap[Row, Row] = new HashMap[Row, Row]()
       var isLeftInner: Boolean = true
       var hasValue:    Boolean = false
       var nextValue:   JoinedRow = null
@@ -73,7 +73,7 @@ trait SymmetricHashJoin {
        *
        * *** THIS MUST BE IMPLEMENTED FOR THE ITERATOR TRAIT ***
        */
-      override def next() = {
+      override def next(): JoinedRow = {
         // IMPLEMENT ME
         if (findNextMatch) {
           hasValue = false
@@ -90,7 +90,7 @@ trait SymmetricHashJoin {
        *
        * *** THIS MUST BE IMPLEMENTED FOR THE ITERATOR TRAIT ***
        */
-      override def hasNext() = {
+      override def hasNext(): Boolean = {
         // IMPLEMENT ME
         // Ensures that both the innerIter and outerIter have more values, 
         if (leftIter.hasNext || rightIter.hasNext){
@@ -127,9 +127,8 @@ trait SymmetricHashJoin {
         }
       }
 
-      def probeAndInsert(tuple : Row, insertHT : HashMap[Projection, Row], probeHT : HashMap[Projection, Row], generator : Projection) = {
+      def probeAndInsert(tuple : Row, insertHT : HashMap[Row, Row], probeHT : HashMap[Row, Row], generator : Projection) = {
         var projectionOfTuple = generator(tuple) //this is the key; Row is the value
-        println(projectionOfTuple.getClass)
         insertHT+= (projectionOfTuple -> tuple)
         var keyExists: Boolean = probeHT.contains(projectionOfTuple)
         if (keyExists){
