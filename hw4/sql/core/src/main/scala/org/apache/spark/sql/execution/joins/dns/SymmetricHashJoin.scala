@@ -128,14 +128,11 @@ trait SymmetricHashJoin {
       }
 
       def probeAndInsert(tuple : Row, insertHT : HashMap[Row, Row], probeHT : HashMap[Row, Row], generator : Projection) = {
-        var projectionOfTuple = generator.apply(tuple)
-        if (projectionOfTuple.isDefined){
-          projectionOfTuple = projectionOfTuple.get
-        } //this is the key; Row is the value
+        var projectionOfTuple = generator.apply(tuple) //this is the key; Row is the value
         insertHT+= (projectionOfTuple -> tuple)
         var keyExists: Boolean = probeHT.contains(projectionOfTuple)
         if (keyExists){
-          var probeValue: Row = probeHT.get(projectionOfTuple)
+          var probeValue: Row = probeHT.get(projectionOfTuple).get
           nextValue = new JoinedRow(tuple, probeValue )
           hasValue = true
         }
