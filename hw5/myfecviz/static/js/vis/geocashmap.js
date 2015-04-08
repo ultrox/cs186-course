@@ -153,8 +153,8 @@ USCashMap.prototype.render = function (data) {
         // (1) Add to slected states
         that.addStateToSelection(state_code);
         // (2) Change color
-        var test = d3.select(this)
-        test.fill ='#fff';
+
+        d3.select(this).transition().duration(200).attr("fill", '#fff');
         // (3) Set Inspection info
         that.setInspectionInfo(that.stateNameMap.get(state_code),total_amount);
         console.log("Component received a mouseover event!");  // Remove when implemented
