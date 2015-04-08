@@ -38,7 +38,7 @@ def get_all_transaction_amounts():
     for result in results:
         final_dict = {}
         final_dict['state'] = result[0]
-        final_dict['total_amount'] = float(result[1])
+        final_dict['amount'] = float(result[1])
         final_results.append(final_dict)
     # Package into output
     return final_results
