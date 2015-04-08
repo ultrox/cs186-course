@@ -97,6 +97,7 @@ USCashMap.prototype.setupMap = function () {
  * @params {Array} data is a list of objects containg the keys 'state' and 'total_amount'
  */
 USCashMap.prototype.render = function (data) {
+    console.log(data)
     // Hack needed to access class object in functions defined in this scope
     var that = this;
 
