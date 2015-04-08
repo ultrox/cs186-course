@@ -114,7 +114,12 @@ DashboardController.prototype.filterTransactionsByMapSelection = function () {
     // Implement
     var selected_states = this.usCashMap.getStatesInSelection();
     var filter_func = function (datum) {
-        return datum['state'] in selected_states;
+        if (selected_states.indexOf(datum['state']) != -1){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     var filtered_transactions = this.allTransactions.filter(filter_func);
     return filtered_transactions;
