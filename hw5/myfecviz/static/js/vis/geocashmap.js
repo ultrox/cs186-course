@@ -120,7 +120,7 @@ USCashMap.prototype.render = function (data) {
         .attr("fill", function(d) {
             // Change the color based on the state's total contribution amount
             // Hint: take a look at moneyColorScale defined above
-            var hex_val = moneyColorScale(d)
+            var hex_val = moneyColorScale(d['total_amount'])
             // Implement
             return hex_val;  // Return a hexcode
         });
