@@ -31,10 +31,15 @@ def get_all_transaction_amounts():
     """
     
     # Execute database query
-    db.execute("SELECT state, transaction_amt AS amount FROM committee_contributions WHERE transaction_amt > 0")
+    db.execute("SELECT state, transaction_amt FROM committee_contributions WHERE transaction_amt > 0")
     results = db.fetchall()
+    final_results = list()
+
+    for result in results
+        final_dict = {"state":result[0], "amount":float(result[1])} 
+        final_results+=final_dict
     # Package into output
-    return results
+    return final_results
 
 
 def get_total_transaction_amounts_by_state():
@@ -47,7 +52,12 @@ def get_total_transaction_amounts_by_state():
     """
     
     # Execute database query
-    db.execute("SELECT state, SUM(transaction_amt) AS total_amount FROM committee_contributions WHERE transaction_amt > 0 GROUP BY state")
+    db.execute("SELECT state, SUM(transaction_amt) FROM committee_contributions WHERE transaction_amt > 0 GROUP BY state")
     results = db.fetchall()
-    # Package into list of dictionaries
-    return results
+    final_results = list()
+
+    for result in results
+        final_dict = {"state":result[0], "total_amount":float(result[1])} 
+        final_results+=final_dict
+    # Package into output
+    return final_results
