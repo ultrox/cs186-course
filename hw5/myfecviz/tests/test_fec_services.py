@@ -14,14 +14,13 @@ class FECServiceTest(FlaskClientTestCase):
         results = fec.get_all_transaction_amounts()
 
         for result in results:
-            print(result)
             self.assertLess(0, result['amount'])
 
     def test_get_all_transaction_amounts(self):
         """Verify the first dict has the right keys."""
         results = fec.get_all_transaction_amounts()
+        
         result = results[0]
-        print(result)
         # Inspect first result for proper keys
         self.assertIn('state', result)
         self.assertIn('amount', result)
@@ -29,7 +28,7 @@ class FECServiceTest(FlaskClientTestCase):
     def test_get_total_transaction_amounts_by_state(self):
         """Verify transaction amount groupings have the right keys."""
         results = fec.get_total_transaction_amounts_by_state()
-        print(results[0])
+
         result = results[0]
         self.assertIn('state', result)
         self.assertIn('total_amount', result)

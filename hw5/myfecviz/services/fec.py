@@ -36,10 +36,12 @@ def get_all_transaction_amounts():
     final_results = list()
 
     for result in results:
-        final_dict = {"state":result[0], "amount":float(result[1])} 
-        final_results+=final_dict
+        final_dict = {}
+        final_dict['state'] = result[0]
+        final_dict['total_amount'] = float(result[1])
+        final_results += final_dict
     # Package into output
-    return results
+    return final_results
 
 
 def get_total_transaction_amounts_by_state():
@@ -57,7 +59,9 @@ def get_total_transaction_amounts_by_state():
     final_results = list()
 
     for result in results:
-        final_dict = {"state":result[0], "total_amount":float(result[1])} 
+        final_dict = {}
+        final_dict['state'] = result[0]
+        final_dict['total_amount'] = float(result[1])
         final_results+=final_dict
     # Package into output
-    return results
+    return final_results
