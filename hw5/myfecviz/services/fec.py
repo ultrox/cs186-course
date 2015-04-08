@@ -34,6 +34,7 @@ def get_all_transaction_amounts():
     db.execute("SELECT state AS \'state\', transaction_amt AS \'amount\' FROM committee_contributions WHERE transaction_amt > 0")
     results = db.fetchall()
     # Package into output
+    print(results)
     return results
 
 
