@@ -155,7 +155,7 @@ USCashMap.prototype.render = function (data) {
         // (2) Change color
         that.states.filter(state_code).attr("fill", '#fff');
         // (3) Set Inspection info
-        that.setInspectionInfo(stateNameMap.get(state_code),total_amount);
+        that.setInspectionInfo(that.stateNameMap.get(state_code),total_amount);
         console.log("Component received a mouseover event!");  // Remove when implemented
     });
 
