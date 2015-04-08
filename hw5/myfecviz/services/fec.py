@@ -31,7 +31,7 @@ def get_all_transaction_amounts():
     """
     
     # Execute database query
-    db.execute("SELECT state AS state, transaction_amt AS amount FROM committee_contributions WHERE transaction_amt > 0")
+    db.execute("SELECT state AS \'state\', transaction_amt AS \'amount\' FROM committee_contributions WHERE transaction_amt > 0")
     results = db.fetchall()
     # Package into output
     return results
@@ -47,7 +47,7 @@ def get_total_transaction_amounts_by_state():
     """
     
     # Execute database query
-    db.execute("SELECT state AS state, transaction_amt AS total_amount FROM committee_contributions WHERE transaction_amt > 0 GROUP BY state")
+    db.execute("SELECT state AS \'state\', SUM(transaction_amt) AS \'total_amount\' FROM committee_contributions WHERE transaction_amt > 0 GROUP BY state")
     results = db.fetchall()
     # Package into list of dictionaries
     return results
