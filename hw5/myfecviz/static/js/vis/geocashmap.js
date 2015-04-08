@@ -147,15 +147,15 @@ USCashMap.prototype.render = function (data) {
         // NOTE: if you want to reference the USCashMap instantiated object,  you must use the
         // `that` variable defined above rather than `this`, since `this` is rebound to a newly
         // defined function.
-        var state_code = d['state']
-        var total_amount = d['total_amount'] 
+        var state_code = d['state'];
+        var total_amount = d['total_amount'];
         // Implement
         // (1) Add to slected states
-        that.addStateToSelection(state_code)
+        that.addStateToSelection(state_code);
         // (2) Change color
-        that.states.filter(state_code).attr("fill", #fff)
+        that.states.filter(state_code).attr("fill", '#fff');
         // (3) Set Inspection info
-        that.setInspectionInfo(stateNameMap.get(state_code),total_amount)
+        that.setInspectionInfo(stateNameMap.get(state_code),total_amount);
         console.log("Component received a mouseover event!");  // Remove when implemented
     });
 
