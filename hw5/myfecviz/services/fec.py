@@ -35,7 +35,7 @@ def get_all_transaction_amounts():
     results = db.fetchall()
     final_results = list()
 
-    for result in results
+    for result in results:
         final_dict = {"state":result[0], "amount":float(result[1])} 
         final_results+=final_dict
     # Package into output
@@ -56,7 +56,7 @@ def get_total_transaction_amounts_by_state():
     results = db.fetchall()
     final_results = list()
 
-    for result in results
+    for result in results:
         final_dict = {"state":result[0], "total_amount":float(result[1])} 
         final_results+=final_dict
     # Package into output
