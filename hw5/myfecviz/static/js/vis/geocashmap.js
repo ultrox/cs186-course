@@ -184,7 +184,7 @@ USCashMap.prototype.render = function (data) {
         // (2) Remove state code from selected states
         that.removeStateFromSelection(state_code);
         // (3) Reset color of map
-        that.states.transition().duration(200)
+        that.states.transition().duration(10)
         .attr("fill", function(d) {
             // Change the color based on the state's total contribution amount
             // Hint: take a look at moneyColorScale defined above
@@ -217,6 +217,15 @@ USCashMap.prototype.render = function (data) {
         // defined function.
 
         // Implement
+        var state_code = d['state'];
+        var total_amount = d['total_amount'];
+        // (1) Add to selection
+        that.addStateToSelection(state_code)
+        // (2) Add color
+        d3.select(this).transition().duration(200).attr("fill", '#0ff');
+
+        // (3) Set Inspection info
+        that.setInspectionInfo(that.stateNameMap.get(state_code),total_amount);
         console.log("Component received a click!");  // Remove when implemented
     });
 };
