@@ -153,7 +153,33 @@ TransactionHistogram.prototype.setScale = function (data) {
       .range(d3.range(0, this.width, this.width/(this.bins.length + 1)));
 
     // Implement: define a suitable yScale given the data
-    this.yScale;
+    var amount_arr = [];
+    for (datum in data){
+        var amount = datum['amount'];
+        if(amount <= 50){
+            amount_arr[0] = 1 + amount_arr[0] ;
+        }else if (amount <=200){
+            amount_arr[1] = 1 + amount_arr[1] ;
+        }else if (amount <=500){
+            amount_arr[2] = 1 + amount_arr[2] ;
+        }else if (amount <=1000){
+            amount_arr[3] = 1 + amount_arr[3] ;
+        }else if (amount <=10000){
+            amount_arr[4] = 1 + amount_arr[4] ;
+        }else if (amount <=50000){
+            amount_arr[5] = 1 + amount_arr[5] ;
+        }else if (amount <=100000){
+            amount_arr[6] = 1 + amount_arr[6] ;
+        }else if (amount <=1000000){
+            amount_arr[7] = 1 + amount_arr[7] ;
+        }
+    }
+    var min_bin = Math.min.apply(Math, amount_arr);
+    var max_bin = Math.max.apply(Math, amount_arr);
+
+    this.yScale = d3.scale.threshold()
+      .domain([min_bin,max_bin]) 
+      .range(d3.range(2,this.height));
 
     return histogramData;
 };
