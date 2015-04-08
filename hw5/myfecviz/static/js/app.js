@@ -82,13 +82,14 @@ DashboardController.prototype.processChanges = function () {
     if (this.usCashMap.isSelectionClick() && this.usCashMap.hasSelection()) {
         // Selection was clicked
         // Make sure transaction histogram is rescaled to just the selection
-
+        this.transactionHistogram.setScale(filterTransactionsByMapSelection());
         // Implement ! 
     } else if (this.usCashMap.hasSelection()) {
         // Selection is just hovered upon
         // Use scale representing all of data (for a visually relative measure) 
 
-        // Implement ! 
+        // Implement !
+        this.transactionHistogram.setScale(this.allTransactions);
     } else {
         // No user interaction
         // Process the map like normal
@@ -98,7 +99,7 @@ DashboardController.prototype.processChanges = function () {
     }
 
     // Uncomment the following line when you're ready!
-    // this.transactionHistogram.render(renderData);
+    //this.transactionHistogram.render(renderData);
 };
 
 /*
@@ -111,5 +112,10 @@ DashboardController.prototype.processChanges = function () {
  */
 DashboardController.prototype.filterTransactionsByMapSelection = function () {
     // Implement
-    return [];
+    var selected_states = this.usCashMap.getStatesInSelection();
+    var filter_func = function (datum) {
+        return datum['state'] in selected_states;
+    }
+    var filtered_transactions = this.allTransactions.filter(filter_func);
+    return filtered_transactions;
 };

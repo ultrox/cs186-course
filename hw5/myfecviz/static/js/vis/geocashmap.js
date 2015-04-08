@@ -222,7 +222,7 @@ USCashMap.prototype.render = function (data) {
         // (1) Add to selection
         that.addStateToSelection(state_code)
         // (2) Add color
-        d3.select(this).transition().duration(200).attr("fill", '#0ff');
+        d3.select(this).transition().duration(200).attr("fill", '#55ACEE');
 
         // (3) Set Inspection info
         that.setInspectionInfo(that.stateNameMap.get(state_code),total_amount);
