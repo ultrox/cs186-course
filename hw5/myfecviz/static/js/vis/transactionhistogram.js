@@ -78,6 +78,7 @@ TransactionHistogram.prototype.render = function(data) {
 
     // Add a rectangle to this bar grouping
     bar.append("rect")
+        .attr("fill", "steelblue")
         .attr("x", 1 )
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("width", this.xScale(histogramData[0].dx) - 1)
@@ -88,7 +89,7 @@ TransactionHistogram.prototype.render = function(data) {
         .attr("dy", ".75em")
         .attr("fill", "#ffffff")
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
-        .attr("x", function(d) { return that.width - that.xScale(d.x);})
+        .attr("x", function(d) { return that.xScale(d.x);})
         .attr("text-anchor", "middle")
         .text(function(d) { return that.formatBinCount(d.y); });
 
