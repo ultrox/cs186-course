@@ -71,18 +71,29 @@ TransactionHistogram.prototype.render = function(data) {
     /* Enter phase */
     // Implement
     // Add a new grouping
+    bar.enter().append("g").attr("class", "bar")
 
     // Add a rectangle to this bar grouping
+    bar.append("rect")
+        .attr("x", 1)
+        .attr("width", histogramData[0].dx - 1)
+        .attr("height", function(d) { return height - y(d.y); });
 
     // Add text to this bar grouping
-
+    bar.append("text")
+        .attr("dy", ".75em")
+        .attr("y", 6)
+        .attr("x", histogramData[0].dx / 2)
+        .attr("text-anchor", "middle")
+        .text(function(d) { return formatCount(d.y); });
 
     /** Update phase */
     // Implement
-
+    bar.data(histogramData, function(d) {return d.x;});
 
     /** Exit phase */
     // Implement
+    bar.exit().remove();
 
 
     // Draw / update the axis as well
@@ -177,7 +188,7 @@ TransactionHistogram.prototype.setScale = function (data) {
     var min_bin = Math.min.apply(Math, amount_arr);
     var max_bin = Math.max.apply(Math, amount_arr);
 
-    this.yScale = d3.scale.threshold()
+    this.yScale = d3.scale.linear()
       .domain([min_bin,max_bin]) 
       .range(d3.range(2,this.height));
 

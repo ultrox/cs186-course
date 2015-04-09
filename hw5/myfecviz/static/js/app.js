@@ -83,7 +83,7 @@ DashboardController.prototype.processChanges = function () {
         // Selection was clicked
         // Make sure transaction histogram is rescaled to just the selection
         // Implement ! 
-        renderData = filterTransactionsByMapSelection();
+        renderData = this.filterTransactionsByMapSelection();
         this.transactionHistogram.setScale(renderData);
     } else if (this.usCashMap.hasSelection()) {
         // Selection is just hovered upon
