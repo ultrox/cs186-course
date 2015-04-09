@@ -79,6 +79,7 @@ TransactionHistogram.prototype.render = function(data) {
     // Add a rectangle to this bar grouping
     bar.append("rect")
         .attr("x", 1 )
+        .attr("y", 1 )
         .attr("width", this.width/this.bins.length)
         .attr("height", function(d) { return that.yScale(d.y); });
 
@@ -86,7 +87,7 @@ TransactionHistogram.prototype.render = function(data) {
     bar.append("text")
         .attr("dy", ".75em")
         .attr("y", function(d) { return that.yScale(d.y);})
-        .attr("x", this.width/2)
+        .attr("x", 1)
         .attr("text-anchor", "middle")
         .text(function(d) { return that.formatBinCount(d.y); });
 
