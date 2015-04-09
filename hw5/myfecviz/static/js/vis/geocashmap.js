@@ -153,7 +153,7 @@ USCashMap.prototype.render = function (data) {
         // (1) Add to slected states
         that.addStateToSelection(state_code);
         // (2) Change color
-        d3.select(this).transition().duration(200).attr("fill", '#fff');
+        d3.select(this).transition().duration(100).attr("fill", '#fff');
         // (3) Set Inspection info
         that.setInspectionInfo(that.stateNameMap.get(state_code),total_amount);
         console.log("Component received a mouseover event!");  // Remove when implemented
@@ -184,7 +184,7 @@ USCashMap.prototype.render = function (data) {
         // (2) Remove state code from selected states
         that.removeStateFromSelection(state_code);
         // (3) Reset color of map
-        that.states.transition().duration(10)
+        that.states.transition().duration(0)
         .attr("fill", function(d) {
             // Change the color based on the state's total contribution amount
             // Hint: take a look at moneyColorScale defined above
