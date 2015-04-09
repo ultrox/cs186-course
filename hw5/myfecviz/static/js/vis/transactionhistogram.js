@@ -80,7 +80,7 @@ TransactionHistogram.prototype.render = function(data) {
     bar.append("rect")
         .attr("x", 1 )
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
-        .attr("width", this.width/this.bins.length)
+        .attr("width", this.xScale(histogramData[0].dx) - 1)
         .attr("height", function(d) { return that.yScale(d.y); });
 
     // Add text to this bar grouping
