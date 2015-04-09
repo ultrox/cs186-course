@@ -86,7 +86,7 @@ TransactionHistogram.prototype.render = function(data) {
     // Add text to this bar grouping
     bar.append("text")
         .attr("dy", ".75em")
-        .attr("y", function(d) { return that.yScale(d.y);})
+        .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("x", 1)
         .attr("text-anchor", "middle")
         .text(function(d) { return that.formatBinCount(d.y); });
