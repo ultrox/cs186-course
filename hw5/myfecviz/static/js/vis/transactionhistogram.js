@@ -80,13 +80,13 @@ TransactionHistogram.prototype.render = function(data) {
     bar.append("rect")
         .attr("x", 1 )
         .attr("width", this.width/this.bins.length)
-        .attr("height", function(d) { return that.height - that.yScale(d.y); });
+        .attr("height", function(d) { return that.yScale(d.y); });
 
     // Add text to this bar grouping
     bar.append("text")
         .attr("dy", ".75em")
         .attr("y", function(d) { return that.yScale(d.y);})
-        .attr("x", 1)
+        .attr("x", this.width/2)
         .attr("text-anchor", "middle")
         .text(function(d) { return that.formatBinCount(d.y); });
 
@@ -194,7 +194,7 @@ TransactionHistogram.prototype.setScale = function (data) {
     var max_bin = Math.max.apply(Math, histogramData.map( function (datum) { return datum.length; }));
 
     this.yScale = d3.scale.linear()
-      .domain([min_bin,max_bin]) 
+      .domain([0,max_bin]) 
       .range(d3.range(1,this.height));
 
     return histogramData;
