@@ -105,6 +105,14 @@ TransactionHistogram.prototype.render = function(data) {
     /** Update phase */
     // Implement
     bar.data(histogramData, function(d) {return d.x;});
+    bar.selectAll("g").selectAll("bar").transition().duration(200)
+        .data(function(d){return [d];})
+        .attr("fill", "steelblue")
+        .attr("x", 1 )
+        .attr("y", function(d) { return that.height - that.yScale(d.y);})
+        .attr("width", this.xScale(histogramData[0].dx) - 1)
+        .attr("height", function(d) { return that.yScale(d.y); });
+
 
     /** Exit phase */
     // Implement
