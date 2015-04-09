@@ -73,13 +73,12 @@ TransactionHistogram.prototype.render = function(data) {
     // Add a new grouping
     bar.enter().append("g")
         .attr("class", "bar")
-        .attr("transform", function(d) { return "translate(" + that.xScale(d.x) + "," + that.yScale(d.y) + ")"; });
+        .attr("transform", function(d) { return "translate(" + that.xScale(d.x)+", 0 )"; });
 
 
     // Add a rectangle to this bar grouping
     bar.append("rect")
         .attr("x", 1 )
-        .attr("y", 1 )
         .attr("width", this.width/this.bins.length)
         .attr("height", function(d) { return that.yScale(d.y); });
 
