@@ -76,16 +76,16 @@ TransactionHistogram.prototype.render = function(data) {
     // Add a rectangle to this bar grouping
     bar.append("rect")
         .attr("x", 1)
-        .attr("width", histogramData[0].dx - 1)
-        .attr("height", function(d) { return height - y(d.y); });
+        .attr("width", this.width)
+        .attr("height", function(d) { return this.height - this.yScale(d.y); });
 
     // Add text to this bar grouping
     bar.append("text")
         .attr("dy", ".75em")
-        .attr("y", 6)
-        .attr("x", histogramData[0].dx / 2)
+        .attr("y", function(d) { return this.yScale(d.y);})
+        .attr("x", function(d) { return this.xScale(d.dx) / 2);})
         .attr("text-anchor", "middle")
-        .text(function(d) { return formatCount(d.y); });
+        .text(function(d) { return this.formatBinCount(d.y); });
 
     /** Update phase */
     // Implement
@@ -164,7 +164,7 @@ TransactionHistogram.prototype.setScale = function (data) {
       .range(d3.range(0, this.width, this.width/(this.bins.length + 1)));
 
     // Implement: define a suitable yScale given the data
-    var amount_arr = [];
+    /*var amount_arr = [];
     for (datum in data){
         var amount = datum['amount'];
         if(amount <= 50){
@@ -186,7 +186,9 @@ TransactionHistogram.prototype.setScale = function (data) {
         }
     }
     var min_bin = Math.min.apply(Math, amount_arr);
-    var max_bin = Math.max.apply(Math, amount_arr);
+    var max_bin = Math.max.apply(Math, amount_arr);*/
+    var min_bin = 0;
+    var max_bin = Math.max.apply(Math, histogramData.map( function (datum) { return datum.length; }));
 
     this.yScale = d3.scale.linear()
       .domain([min_bin,max_bin]) 
