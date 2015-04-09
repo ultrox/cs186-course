@@ -195,7 +195,7 @@ TransactionHistogram.prototype.setScale = function (data) {
 
     this.yScale = d3.scale.linear()
       .domain([0,max_bin]) 
-      .range(d3.range(1,this.height));
+      .range([1,this.height]);
 
     return histogramData;
 };
