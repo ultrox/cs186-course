@@ -190,12 +190,12 @@ TransactionHistogram.prototype.setScale = function (data) {
     }
     var min_bin = Math.min.apply(Math, amount_arr);
     var max_bin = Math.max.apply(Math, amount_arr);*/
-    var min_bin = 0;
+    var min_bin = Math.min.apply(Math, histogramData.map( function (datum) { return datum.length; }));;
     var max_bin = Math.max.apply(Math, histogramData.map( function (datum) { return datum.length; }));
 
     this.yScale = d3.scale.linear()
       .domain([min_bin,max_bin]) 
-      .range(d3.range(2,this.height));
+      .range(d3.range(1,this.height));
 
     return histogramData;
 };
