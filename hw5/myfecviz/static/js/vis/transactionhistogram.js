@@ -75,7 +75,7 @@ TransactionHistogram.prototype.render = function(data) {
 
     // Add a rectangle to this bar grouping
     bar.append("rect")
-        .attr("x", 1)
+        .attr("x", -this.width/2 )
         .attr("width", this.width/this.bins.length)
         .attr("height", function(d) { return that.height - that.yScale(d.y); });
 
