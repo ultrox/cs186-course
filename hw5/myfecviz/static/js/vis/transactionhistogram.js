@@ -83,7 +83,7 @@ TransactionHistogram.prototype.render = function(data) {
     bar.append("text")
         .attr("dy", ".75em")
         .attr("y", function(d) { return this.yScale(d.y);})
-        .attr("x", function(d) { return this.xScale(d.dx) / 2);})
+        .attr("x", function(d) { return this.xScale(d.dx) / 2;})
         .attr("text-anchor", "middle")
         .text(function(d) { return this.formatBinCount(d.y); });
 
