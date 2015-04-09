@@ -77,15 +77,15 @@ TransactionHistogram.prototype.render = function(data) {
     bar.append("rect")
         .attr("x", 1)
         .attr("width", this.width)
-        .attr("height", function(d) { return this.height - this.yScale(d.y); });
+        .attr("height", function(d) { return that.height - that.yScale(d.y); });
 
     // Add text to this bar grouping
     bar.append("text")
         .attr("dy", ".75em")
-        .attr("y", function(d) { return this.yScale(d.y);})
-        .attr("x", function(d) { return this.xScale(d.dx) / 2;})
+        .attr("y", function(d) { return that.yScale(d.y);})
+        .attr("x", function(d) { return that.xScale(d.dx) / 2;})
         .attr("text-anchor", "middle")
-        .text(function(d) { return this.formatBinCount(d.y); });
+        .text(function(d) { return that.formatBinCount(d.y); });
 
     /** Update phase */
     // Implement
