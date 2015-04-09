@@ -96,7 +96,7 @@ TransactionHistogram.prototype.render = function(data) {
         .attr("y", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
             if (temp>(that.height-10))
-                return that.height - that.yScale(d.y);
+                return that.height - that.yScale(d.y) - 10;
             return temp;})
         .attr("x", this.xScale(histogramData[0].dx) / 2)
         .attr("text-anchor", "middle")
