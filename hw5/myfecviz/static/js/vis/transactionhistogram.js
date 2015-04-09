@@ -89,15 +89,15 @@ TransactionHistogram.prototype.render = function(data) {
         .attr("dy", ".75em")
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
-            var ret = "#ffffff"
-            if (temp>(that.height+10)
-                ret = "steelblue";
-            return ret;)
+            if (temp>(that.height+10)){
+                return "steelblue";
+            }
+            return "white";})
         .attr("y", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
-            if (temp>(that.height+10)
-                temp = that.height - 6;
-            return temp;
+            if (temp>(that.height+10))
+                return that.height - 6;
+            return temp;})
         })
         .attr("x", this.xScale(histogramData[0].dx) / 2)
         .attr("text-anchor", "middle")
