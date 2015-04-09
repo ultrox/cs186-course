@@ -98,7 +98,6 @@ TransactionHistogram.prototype.render = function(data) {
             if (temp>(that.height+10))
                 return that.height - 6;
             return temp;})
-        })
         .attr("x", this.xScale(histogramData[0].dx) / 2)
         .attr("text-anchor", "middle")
         .text(function(d) { return that.formatBinCount(d.y); });
