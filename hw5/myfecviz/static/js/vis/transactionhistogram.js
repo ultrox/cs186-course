@@ -89,15 +89,13 @@ TransactionHistogram.prototype.render = function(data) {
         .attr("dy", ".75em")
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
-            if (temp>(that.height+10){
+            if (temp>(that.height+10)
                 return "steelblue";
-            }
             return "#ffffff";)
         .attr("y", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
-            if (temp>(that.height+10){
+            if (temp>(that.height+10)
                 return that.height - 6;
-            }
             return temp;
         })
         .attr("x", this.xScale(histogramData[0].dx) / 2)
