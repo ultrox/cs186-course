@@ -104,7 +104,7 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Update phase */
     // Implement
-    bar.selectAll("g").selectAll("rect").
+    grouping.selectAll("rect").
         data(histogramData, function(d) {return d.x;});
     grouping.transition().duration(200)
         .attr("transform", function (d) {
