@@ -77,7 +77,7 @@ TransactionHistogram.prototype.render = function(data) {
 
 
     // Add a rectangle to this bar grouping
-    bar.append("rect")
+    grouping.append("rect")
         .attr("fill", "steelblue")
         .attr("x", 1 )
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
@@ -85,7 +85,7 @@ TransactionHistogram.prototype.render = function(data) {
         .attr("height", function(d) { return that.yScale(d.y); });
 
     // Add text to this bar grouping
-    bar.append("text")
+    grouping.append("text")
         .attr("dy", ".75em")
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
@@ -104,19 +104,19 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Update phase */
     // Implement
-    bar.selectAll("g").selectAll("rect")
+    grouping.selectAll("g").selectAll("rect")
         .data(histogramData, function(d) {return d.x;});
-    bar.selectAll("g").selectAll("rect")
+    grouping.selectAll("g").selectAll("rect")
         .transition().duration(200)
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("height", function(d) { return that.yScale(d.y); });
         /*.attr("transform", function (d) {
             return "translate(0, 0) scale( 1, " + that.yScale(d.y)+")";
         });*/
-    bar.selectAll("g").selectAll("text")
+    grouping.selectAll("g").selectAll("text")
         .data(histogramData, function(d) { return d.x;});
 
-    bar.selectAll("g").selectAll("text")
+    grouping.selectAll("g").selectAll("text")
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
             if (temp>(that.height-10)){
