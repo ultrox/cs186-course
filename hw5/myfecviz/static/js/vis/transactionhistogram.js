@@ -108,13 +108,7 @@ TransactionHistogram.prototype.render = function(data) {
     bar.transition().duration(200)
         .attr("transform", function (d) {
             return "translate(" + that.xScale(d.x) +", 0)";
-        })
-        .attr("fill", "steelblue")
-        .attr("x", 1 )
-        .attr("y", function(d) { return that.height - that.yScale(d.y);})
-        .attr("width", this.xScale(histogramData[0].dx) - 1)
-        .attr("height", function(d) { return that.yScale(d.y); })
-        ;
+        });
 
 
     /** Exit phase */
