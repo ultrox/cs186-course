@@ -104,12 +104,13 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Update phase */
     // Implement
-    grouping.selectAll("rect").
-        data(histogramData, function(d) {return d.x;});
-    grouping.transition().duration(200)
+    grouping.selectAll("rect")
+        .data(histogramData, function(d) {return d.x;})
+        .transition().duration(200)
         .attr("transform", function (d) {
             return "translate(" + that.xScale(d.x) +", 0)";
-        });
+        })
+        .attr("height", function(d) { return that.yScale(d.y); });
 
 
     /** Exit phase */
