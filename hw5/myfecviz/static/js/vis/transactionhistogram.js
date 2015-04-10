@@ -114,7 +114,7 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Exit phase */
     // Implement
-    grouping.remove();
+    grouping.exit().remove();
 
 
     // Draw / update the axis as well
