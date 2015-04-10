@@ -104,9 +104,9 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Update phase */
     // Implement
-    bar.selectAll("g").selectAll("rect").
+    gruoping.selectAll("g").selectAll("rect").
         data(histogramData, function(d) {return d.x;});
-    grouping.transition().duration(200)
+    grouping.selectAll("rect").transition().duration(200)
         .attr("transform", function (d) {
             return "translate(" + that.xScale(d.x) +", 0)";
         });
@@ -114,7 +114,7 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Exit phase */
     // Implement
-    bar.exit().remove();
+    grouping.exit().remove();
 
 
     // Draw / update the axis as well
