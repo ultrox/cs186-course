@@ -104,19 +104,19 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Update phase */
     // Implement
-    grouping.selectAll("g").selectAll("rect")
+    grouping.selectAll("rect")
         .data(histogramData, function(d) {return d.x;});
-    grouping.selectAll("g").selectAll("rect")
+    grouping.selectAll("rect")
         .transition().duration(200)
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("height", function(d) { return that.yScale(d.y); });
         /*.attr("transform", function (d) {
             return "translate(0, 0) scale( 1, " + that.yScale(d.y)+")";
         });*/
-    grouping.selectAll("g").selectAll("text")
+    grouping.selectAll("text")
         .data(histogramData, function(d) { return d.x;});
 
-    grouping.selectAll("g").selectAll("text")
+    grouping.selectAll("text")
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
             if (temp>(that.height-10)){
