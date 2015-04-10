@@ -108,7 +108,7 @@ TransactionHistogram.prototype.render = function(data) {
         .data(histogramData, function(d) {return d.x;})
         .transition().duration(200)
         .attr("transform", function (d) {
-            return "scale( 0 , "+that.yScale(d.y)+" )";
+            return "scale( 1 , "+that.yScale(d.y)+" )";
         })
         .attr("height", function(d) { return that.yScale(d.y); });
 
