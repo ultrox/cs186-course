@@ -107,7 +107,7 @@ TransactionHistogram.prototype.render = function(data) {
     bar.data(histogramData, function(d) {return d.x;});
     bar.transition().duration(200)
         .attr("transform", function (d) {
-            return "translate(" + this.scaleX(d.x) +", 0)";
+            return "translate(" + that.scaleX(d.x) +", 0)";
         })
         .attr("fill", "steelblue")
         .attr("x", 1 )
