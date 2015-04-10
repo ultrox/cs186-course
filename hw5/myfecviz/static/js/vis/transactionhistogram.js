@@ -105,8 +105,7 @@ TransactionHistogram.prototype.render = function(data) {
     /** Update phase */
     // Implement
     bar.selectAll("g").selectAll("rect")
-        .data(histogramData, function(d) {return d.x;});
-    bar.selectAll("g").selectAll("rect")
+        .data(histogramData, function(d) {return d.x;})
         .transition().duration(200)
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("height", function(d) { return that.yScale(d.y); });
@@ -115,10 +114,9 @@ TransactionHistogram.prototype.render = function(data) {
         });*/
     bar.selectAll("g").selectAll("text")
         .data(histogramData, function(d) { return d.x;});
-
-    bar.selectAll("g").selectAll("text")
+        .transition().duration(200)
         .attr("fill", function(d) { 
-            var temp = 2+that.height - that.yScale(d.y);
+            var temp = 2+that.height - that.yScale(d.y)
             if (temp>(that.height-10)){
                 return "steelblue";
             }
