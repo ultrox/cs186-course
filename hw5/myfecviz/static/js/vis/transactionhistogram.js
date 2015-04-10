@@ -71,13 +71,13 @@ TransactionHistogram.prototype.render = function(data) {
     /* Enter phase */
     // Implement
     // Add a new grouping
-    var g = bar.enter().append("g")
+    var grouping = bar.enter().append("g")
         .attr("class", "bar")
         .attr("transform", function(d) { return "translate(" + that.xScale(d.x)+", 0 )"; });
 
 
     // Add a rectangle to this bar grouping
-    bar.append("rect")
+    grouping.append("rect")
         .attr("fill", "steelblue")
         .attr("x", 1 )
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
@@ -85,7 +85,7 @@ TransactionHistogram.prototype.render = function(data) {
         .attr("height", function(d) { return that.yScale(d.y); });
 
     // Add text to this bar grouping
-    bar.append("text")
+    grouping.append("text")
         .attr("dy", ".75em")
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
@@ -114,7 +114,7 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Exit phase */
     // Implement
-    bar.exit().remove();
+    grouping.remove();
 
 
     // Draw / update the axis as well
