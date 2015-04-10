@@ -109,8 +109,8 @@ TransactionHistogram.prototype.render = function(data) {
         .transition().duration(200)
         .attr("transform", function (d) {
             return "scale( 1 , "+that.yScale(d.y)+" )";
-        })
-        .attr("height", function(d) { return that.yScale(d.y); });
+        });
+        //.attr("height", function(d) { return that.yScale(d.y); });
 
 
     /** Exit phase */
