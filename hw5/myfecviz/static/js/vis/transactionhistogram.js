@@ -104,14 +104,29 @@ TransactionHistogram.prototype.render = function(data) {
 
     /** Update phase */
     // Implement
-    bar.selectAll("g").selectAll("rect").
-        data(histogramData, function(d) {return d.x;});
-    bar.selectAll("rect").transition().duration(200)
+    bar.selectAll("g").selectAll("rect")
+        .data(histogramData, function(d) {return d.x;})
+        .transition().duration(200)
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("height", function(d) { return that.yScale(d.y); });
         /*.attr("transform", function (d) {
             return "translate(0, 0) scale( 1, " + that.yScale(d.y)+")";
         });*/
+    bar.selectAll("g").selectAll("text")
+        .data(histogramData, function(d) { return d.x;})
+        .attr("fill", function(d) { 
+            var temp = 2+that.height - that.yScale(d.y);
+            if (temp>(that.height-10)){
+                return "steelblue";
+            }
+            return "white";})
+        .attr("y", function(d) { 
+            var temp = 2+that.height - that.yScale(d.y);
+            if (temp>(that.height-10))
+                return that.height - that.yScale(d.y) - 10;
+            return temp;})
+        .text(function(d) { return that.formatBinCount(d.y); });
+    
 
 
     /** Exit phase */
