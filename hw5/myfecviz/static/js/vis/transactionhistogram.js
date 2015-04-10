@@ -105,7 +105,7 @@ TransactionHistogram.prototype.render = function(data) {
     /** Update phase */
     // Implement
     bar.data(histogramData, function(d) {return d.x;});
-    bar.selectAll("g").select("bar").transition().duration(200)
+    bar.transition().duration(200)
         .attr("transform", function (d) {
             return "translate(" + this.scaleX(d.x) +", 0)";
         })
