@@ -113,7 +113,7 @@ TransactionHistogram.prototype.render = function(data) {
             return "translate(0, 0) scale( 1, " + that.yScale(d.y)+")";
         });*/
     bar.selectAll("g").selectAll("text")
-        .data(histogramData, function(d) { return d.x;});
+        .data(histogramData, function(d) { return d.x;})
         .transition().duration(200)
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y)
