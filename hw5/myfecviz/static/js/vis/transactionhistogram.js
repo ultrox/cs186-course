@@ -228,7 +228,7 @@ TransactionHistogram.prototype.hasScaleSet = function () {
 TransactionHistogram.prototype.colorStates = {
     'PRIMARY': "#cc6b6b",
     'SECONDARY': "#6b6bcc",
-    'DEFAULT': "6bcc6b"
+    'DEFAULT': "#6bcc6b"
 }
 
 
