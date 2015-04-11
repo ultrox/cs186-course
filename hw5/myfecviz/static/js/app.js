@@ -91,7 +91,7 @@ DashboardController.prototype.processChanges = function () {
         //Implement!
         renderData = this.filterTransactionsByMapSelection()
         this.transactionHistogram.setScale(renderData);
-        this.transactionHistogram.setHistogramColor(this.ucCashMap.hover_color);
+        this.transactionHistogram.setHistogramColor(this.usCashMap.hover_color);
     } else {
         // No user interaction
         // Process the map like normal
