@@ -107,6 +107,7 @@ TransactionHistogram.prototype.render = function(data) {
     bar.selectAll("rect")
         .data(histogramData, function(d) {return d.x;})
         .transition().duration(200)
+        .attr("fill", this.currentColorState)
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("height", function(d) { return that.yScale(d.y); });
         /*.attr("transform", function (d) {
