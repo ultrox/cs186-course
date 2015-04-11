@@ -21,7 +21,7 @@ var USCashMap = function (selector, usTopoJSON, stateIdToStateCodeMap, stateName
     this.height = 500;
 
     this.click_color = "#cc6b6b";
-    this.hover_color = "#6bcc9c";
+    this.hover_color = "#6b6bcc";
 
     // Parameters for rendering U.S. map from TopoJSON
     this.projection = d3.geo.albersUsa()

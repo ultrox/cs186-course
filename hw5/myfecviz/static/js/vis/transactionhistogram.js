@@ -78,7 +78,7 @@ TransactionHistogram.prototype.render = function(data) {
 
     // Add a rectangle to this bar grouping
     grouping.append("rect")
-        .attr("fill", "steelblue")
+        .attr("fill", this.currentColorState)
         .attr("x", 1 )
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("width", this.xScale(histogramData[0].dx) - 1)
@@ -90,7 +90,7 @@ TransactionHistogram.prototype.render = function(data) {
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y);
             if (temp>(that.height-10)){
-                return "steelblue";
+                return this.currentColorState;
             }
             return "white";})
         .attr("y", function(d) { 
@@ -118,7 +118,7 @@ TransactionHistogram.prototype.render = function(data) {
         .attr("fill", function(d) { 
             var temp = 2+that.height - that.yScale(d.y)
             if (temp>(that.height-10)){
-                return "steelblue";
+                return this.currentColorState;
             }
             return "white";})
         .attr("y", function(d) { 
