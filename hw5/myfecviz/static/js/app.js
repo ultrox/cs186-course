@@ -90,7 +90,7 @@ DashboardController.prototype.processChanges = function () {
         // Use scale representing all of data (for a visually relative measure) 
         //Implement!
         renderData = this.filterTransactionsByMapSelection()
-        this.transactionHistogram.setScale(renderData);
+        this.transactionHistogram.setScale(this.allTransactions);
         this.transactionHistogram.setHistogramColor(this.usCashMap.hover_color);
     } else {
         // No user interaction
