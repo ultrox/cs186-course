@@ -109,9 +109,9 @@ TransactionHistogram.prototype.render = function(data) {
         .transition().duration(200)
         .attr("y", function(d) { return that.height - that.yScale(d.y);})
         .attr("height", function(d) { return that.yScale(d.y); });
-        .attr("transform", function (d) {
+        /*.attr("transform", function (d) {
             return "translate(0, 0) scale( 1, " + that.yScale(d.y)+")";
-        });
+        });*/
     bar.selectAll("text")
         .data(histogramData, function(d) { return d.x;})
         .transition().duration(200)
