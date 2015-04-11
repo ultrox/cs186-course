@@ -20,6 +20,9 @@ var USCashMap = function (selector, usTopoJSON, stateIdToStateCodeMap, stateName
     this.width = 740;
     this.height = 500;
 
+    this.click_color = "#cc6b6b";
+    this.hover_color = "#6bcc9c";
+
     // Parameters for rendering U.S. map from TopoJSON
     this.projection = d3.geo.albersUsa()
         .scale(1000)
@@ -153,10 +156,9 @@ USCashMap.prototype.render = function (data) {
         // (1) Add to slected states
         that.addStateToSelection(state_code);
         // (2) Change color
-        d3.select(this).transition().duration(100).attr("fill", '#fff');
+        d3.select(this).transition().duration(100).attr("fill", that.hover_color);
         // (3) Set Inspection info
         that.setInspectionInfo(that.stateNameMap.get(state_code),total_amount);
-        console.log("Component received a mouseover event!");  // Remove when implemented
     });
 
     /*
@@ -192,8 +194,6 @@ USCashMap.prototype.render = function (data) {
             // Implement
             return hex_val;  // Return a hexcode
         });
-
-        console.log("Component received a mouseout event!");  // Remove when implemented
     });
 
     /*
@@ -222,11 +222,10 @@ USCashMap.prototype.render = function (data) {
         // (1) Add to selection
         that.addStateToSelection(state_code)
         // (2) Add color
-        d3.select(this).transition().duration(200).attr("fill", '#55ACEE');
+        d3.select(this).transition().duration(200).attr("fill", that.click_color);
 
         // (3) Set Inspection info
         that.setInspectionInfo(that.stateNameMap.get(state_code),total_amount);
-        console.log("Component received a click!");  // Remove when implemented
     });
 };
 

@@ -84,14 +84,14 @@ DashboardController.prototype.processChanges = function () {
         // Implement ! 
         renderData = this.filterTransactionsByMapSelection();
         this.transactionHistogram.setScale(renderData);
-        this.transactionHistogram.setHistogramColor(this.transactionHistogram.colorStates.PRIMARY);
+        this.transactionHistogram.setHistogramColor(this.usCashMap.click_color);
     } else if (this.usCashMap.hasSelection()) {
         // Selection is just hovered upon
         // Use scale representing all of data (for a visually relative measure) 
         //Implement!
-        renderData = this.allTransactions;
+        renderData = this.filterTransactionsByMapSelection()
         this.transactionHistogram.setScale(renderData);
-        this.transactionHistogram.setHistogramColor(this.transactionHistogram.colorStates.SECONDARY);
+        this.transactionHistogram.setHistogramColor(this.ucCashMap.hover_color);
     } else {
         // No user interaction
         // Process the map like normal
