@@ -8,7 +8,7 @@ I have 3 slip days remaining.
 ### Note: *This homework is to be done individually!*
 ### Due: Tuesday, 1/27, 11:59 PM
 
-##Description
+## Description
 This assignment will give you some experience with a typical task in modern data management:
 using command-line tools to "wrangle" a bunch of publicly-available data into a more structured 
 format suitable for subsequent analysis.  In particular, we will 
@@ -18,18 +18,18 @@ Along the way you will need to exercise your thinking about working with data th
 
 Submission instructions for this homework assignment can be found in [HW0](https://github.com/cs186-spring15/course/tree/master/hw0).
 
-###Your challenge
+### Your challenge
 Given a large data file of ebooks, generate [csv](http://en.wikipedia.org/wiki/Comma-separated_values) files 
 that efficiently capture the ebook contents in a structured form suitable for analysis via a database 
 or statistical package.
 
-###Your tools
+### Your tools
 For this assignment, you are limited to using [Python](https://www.python.org/), [bash](http://www.gnu.org/software/bash/), and the [standard Unix utilities](http://en.wikipedia.org/wiki/List_of_Unix_utilities). All of these are pre-installed on a Virtual Machine for you.
 
 We assume that CS186 students can pick up scripting languages like Python and bash on their own; there will be no Python or bash training as part of the class. 
 
 
-###Your constraints
+### Your constraints
 You need to be able to handle an input file that is far larger than the memory of the computer that runs the script.  To do so, you should:
 
 1. write streaming Python and bash code that only requires a fraction of the data to be in memory at a time, and
@@ -38,7 +38,7 @@ You need to be able to handle an input file that is far larger than the memory o
 
 You should not need to write very complicated code in either Python or bash.  Take advantage of UNIX utilities as much as you can.  In particular, note that there is no need for you to write an out-of-core algorithm to complete this homework: UNIX utilities can do the heavy lifting if you orchestrate them properly.
 
-##Getting started
+## Getting started
 To follow these instructions you will need to set up a copy of the standard Virtual Machine we will use for grading.  We encourage you to run it on your own computer rather than the instructional machines -- it should run comfortably on any recent 64-bit computer under OSX, Windows or Linux.  You will need about 1-2 GB of free space on your disk to get going.
 
 *(You can code outside the VM if you like--we're using fairly vanilla Ubuntu 12.04.5, with Python 2.7.3 and bash4.2.25.  HOWEVER, the CS186 staff will only answer configuration questions pertaining to the VM.  And eventually you need to turn in a solution that runs "out of the box" on a clean CS186 VM, so you'll want to test your code within the VM.)*
@@ -101,7 +101,7 @@ When you're done working you'll want to log out of the VM and shut it down:
 
 Next time you want to fire it up, just cd back to the cs186 directory you created and type `vagrant up` to reboot it.
 
-##Specification
+## Specification
 Your solution should be driven by a `hw1.sh` script that is passed one argument: a .txt file that contains a concatenation of valid ebooks:
 
     vagrant@precise64:~$ ./hw1.sh ebooks_tiny.txt
@@ -119,7 +119,7 @@ The script should overwrite the four example csv output files, as follows:
 
 As in the example csvs, the line endings for your output csvs should be CRLF (\\r\\n). This is the default line ending for Python's csvwriter.
 	
-###Testing
+### Testing
 A simple [Python unit test] is provided in `test_ebook.py`.  If your code is working, you should see something like this if you type the first line to a bash shell in the hw1 directory:
 
     vagrant@precise64:~/course/hw1$ python test/ebook_test.py TestEbook.test_sanity
@@ -150,7 +150,7 @@ To run both tests, you simply type:
 
 We need to ensure that your code will scale to data sets that are bigger than memory -- no matter how much memory is on your test machine.  To this end, the test scripts use Python's [setrlimit](https://docs.python.org/2/library/resource.html) command to cap the amount of virtual memory your hw1.sh script allocates.  If you get a Segmentation fault error, then your code is not doing appropriate streaming and/or divide-and-conquer!
 
-##Notes
+## Notes
 * As noted in `hw1.sh`, the last line should say "exit 0" to indicate a successful completion.  This is important for making the tests run correctly!
 * Consider using `sys.stdin`, `sys.stdout`, and `sys.stderr` in Python, and [UNIX pipes](http://en.wikipedia.org/wiki/Pipeline_(Unix)) to put together separate scripts.  method for writing to csv files.
 * Python has a handy [CSV library](https://docs.python.org/2/library/csv.html) for csv manipulation and string manipulation.  It will make your life simpler.
